@@ -13,7 +13,7 @@ import { ApiBearerAuth, ApiConsumes, ApiTags } from '@nestjs/swagger';
 import { GetUser } from '../auth/decorator/get-user.decorator';
 import { User } from '../auth/entity/user.entity';
 
-// const { editFileName, imageFileFilter } = require('../utils/file-upload.utils');
+const { editFileName, imageFileFilter } = require('../utils/file-upload.utils');
 import { userInfoData } from './interface/user-info.interface';
 import { UserService } from './service/user.service';
 import { diskStorage } from 'multer';
@@ -33,22 +33,22 @@ export class UserController {
     return this.userService.getUser(user);
   }
 
-  // @Patch()
-  // @ApiConsumes('multipart/form-data')
-  // @UseInterceptors(
-  //   FileInterceptor('photo', {
-  //     limits: {
-  //       fileSize: 2097152,
-  //     },
-  //     fileFilter: imageFileFilter,
-  //     storage: diskStorage({
-  //       destination: function (req, file, cb) {
-  //         cb(null, './uploads');
-  //       },
-  //       filename: editFileName,
-  //     }),
-  //   }),
-  // )
+  @Patch()
+  @ApiConsumes('multipart/form-data')
+  @UseInterceptors(
+    FileInterceptor('photo', {
+      limits: {
+        fileSize: 2097152,
+      },
+      fileFilter: imageFileFilter,
+      storage: diskStorage({
+        destination: function (req, file, cb) {
+          cb(null, './uploads');
+        },
+        filename: editFileName,
+      }),
+    }),
+  )
   updateUserInfo(
     @UploadedFile() file,
     @Body() userInfoDto: UserInfoDto,

@@ -14,7 +14,7 @@ services:
     build: 
       context: .
       dockerfile: ./Dockerfile
-    image: tusharchy/nest-and-postgres-application:latest
+    image: evgeniy-logvinov/nest-and-postgres-application:latest
     environment: 
       - DB_TYPE=${DB_TYPE}
       - POSTGRES_HOST=${POSTGRES_HOST}
@@ -28,7 +28,7 @@ services:
       - APP_PORT=${APP_PORT}
     ports: 
       - "3000:3000" # expose-to-the-world : only-in-the-docker
-    container_name: nest-todo-app-be
+    container_name: nest-leasing-app-be
     depends_on: 
       - db
     volumes: 

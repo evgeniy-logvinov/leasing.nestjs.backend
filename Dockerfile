@@ -1,5 +1,5 @@
 # Image source
-FROM node:16
+FROM node:17
 
 # Docker working directory
 WORKDIR /app

@@ -4,5 +4,6 @@ db:
   password: 'postgres'
   synchronize: false
 
+# TODO: Provide secret
 jwt:
   secret: 'somesecret'

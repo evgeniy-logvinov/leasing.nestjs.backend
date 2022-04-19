@@ -15,7 +15,7 @@ export class UserService {
 
   async getUser(user: User): Promise<UserInfo> {
     const userInfo = await this.userInfoRepository.findOne({
-      where: { id: user.user_info.id },
+      where: { id: user.userInfo.id },
     });
 
     if (!userInfo) {
@@ -33,8 +33,8 @@ export class UserService {
     if (userInfoDto.address) userInfo.address = userInfoDto.address;
     if (userInfoDto.petName) userInfo.petName = userInfoDto.petName;
     if (userInfoDto.photo) userInfo.photo = userInfoDto.photo;
-    if (userInfoDto.modified_photo)
-      userInfo.modified_photo = userInfoDto.modified_photo;
+    if (userInfoDto.modifiedPhoto)
+      userInfo.modifiedPhoto = userInfoDto.modifiedPhoto;
 
     await userInfo.save();
     return userInfo;

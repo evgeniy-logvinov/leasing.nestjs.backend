@@ -16,10 +16,10 @@ export class UserRepository extends Repository<User> {
   async signUp(
     signupCredentialsDto: SignupCredentialsDto,
   ): Promise<{ message: string }> {
-    const { username, password } = signupCredentialsDto;
+    const { email, password } = signupCredentialsDto;
 
     const user = new User();
-    user.username = username;
+    user.email = email;
     user.salt = await bcrypt.genSalt();
     user.password = await this.hashPassword(password, user.salt);
 
@@ -28,7 +28,7 @@ export class UserRepository extends Repository<User> {
       userInfo.address = 'defaultAddress';
       await userInfo.save();
 
-      user.user_info = userInfo;
+      user.userInfo = userInfo;
       await user.save();
 
       return { message: 'User successfully created !' };
@@ -44,13 +44,13 @@ export class UserRepository extends Repository<User> {
   async validateUserPassword(
     signinCredentialDto: SignInCredentialsDto,
   ): Promise<JwtPayload> {
-    const { username, password } = signinCredentialDto;
-    const auth = await this.findOne({ username });
+    const { email, password } = signinCredentialDto;
+    const auth = await this.findOne({ email });
 
     if (auth && (await auth.validatePassword(password))) {
       return {
-        username: auth.username,
-        user_info: auth.user_info,
+        email: auth.email,
+        userInfo: auth.userInfo,
       };
     } else {
       return null;

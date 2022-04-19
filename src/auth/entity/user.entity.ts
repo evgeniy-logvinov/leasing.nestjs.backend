@@ -13,16 +13,19 @@ import { Todo } from '../../todo/entity/todo.entity';
 import { UserInfo } from '../../user/entity/user-info.entity';
 
 @Entity()
-@Unique(['username'])
+@Unique(['email'])
 export class User extends BaseEntity {
   @PrimaryGeneratedColumn()
   id: number;
 
   @Column({ type: 'varchar' })
-  username: string;
+  email: string;
 
   @Column({ type: 'varchar' })
   password: string;
+
+  // @Column({ type: 'varchar' })
+  // email: string;
 
   @Column()
   salt: string;
@@ -32,7 +35,7 @@ export class User extends BaseEntity {
 
   @OneToOne((type) => UserInfo, { eager: true })
   @JoinColumn()
-  user_info: UserInfo;
+  userInfo: UserInfo;
 
   async validatePassword(password: string): Promise<boolean> {
     const hash = await bcrypt.hash(password, this.salt);

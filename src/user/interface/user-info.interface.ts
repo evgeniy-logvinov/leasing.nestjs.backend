@@ -2,6 +2,6 @@ export interface userInfoData {
   id: number;
   petName?: string;
   photo?: string;
-  modified_photo?: string;
+  modifiedPhoto?: string;
   address: string;
 }

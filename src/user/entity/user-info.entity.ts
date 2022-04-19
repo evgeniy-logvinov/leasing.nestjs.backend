@@ -11,9 +11,9 @@ export class UserInfo extends BaseEntity {
   @Column({ type: 'varchar', nullable: true })
   photo: string;
 
-  @Column({ type: 'varchar', nullable: true })
-  modified_photo: string;
+  @Column({ name: 'modified_photo', type: 'varchar', nullable: true })
+  modifiedPhoto: string;
 
-  @Column({ type: 'varchar', nullable: false })
+  @Column({ type: 'varchar', nullable: true })
   address: string;
 }

@@ -6,7 +6,7 @@ export class SignInCredentialsDto {
   @IsString()
   @MinLength(4)
   @MaxLength(20)
-  username: string;
+  email: string;
 
   @ApiProperty({
     minimum: 6,

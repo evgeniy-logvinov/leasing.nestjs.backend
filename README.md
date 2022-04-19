@@ -103,3 +103,7 @@ https://github.com/TusharRoy23/todoAppOnNestJs
 
 sudo chmod -R 777 ./pgdata
 sudo chmod -R 777 ./pgadmin-data/
+
+docker-compose up --build
+docker-compose run nestjs npm run typeorm:generate AnyNameYouLike
+docker-compose run nestjs npm run typeorm:run

@@ -1,9 +1,17 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { IsString, Matches, MaxLength, MinLength } from 'class-validator';
+import {
+  IsEmail,
+  IsNotEmpty,
+  IsString,
+  Matches,
+  MaxLength,
+  MinLength,
+} from 'class-validator';
 
 export class SignInCredentialsDto {
   @ApiProperty({ minimum: 4, maximum: 20 })
-  @IsString()
+  @IsEmail()
+  @IsNotEmpty()
   @MinLength(4)
   @MaxLength(20)
   email: string;
@@ -20,4 +28,13 @@ export class SignInCredentialsDto {
     message: 'Password too weak',
   })
   password: string;
+
+  // @Expose()
+  //   @IsEmail()
+  //   @IsNotEmpty()
+  //   @ApiProperty({
+  //       example: 'johndoe@gmail.com',
+  //       description: 'Username',
+  //   })
+  //   username: string
 }

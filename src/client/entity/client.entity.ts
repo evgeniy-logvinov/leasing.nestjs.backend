@@ -1,10 +1,5 @@
-import {
-  BaseEntity,
-  Column,
-  CreateDateColumn,
-  Entity,
-  PrimaryGeneratedColumn,
-} from 'typeorm';
+import { LeasingBaseEntity } from 'src/utils/entities';
+import { Column, CreateDateColumn, Entity } from 'typeorm';
 
 export enum UserState {
   UNREG = 'UNREG',
@@ -12,10 +7,7 @@ export enum UserState {
 }
 
 @Entity()
-export class Client extends BaseEntity {
-  @PrimaryGeneratedColumn()
-  id: number;
-
+export class Client extends LeasingBaseEntity {
   @Column({ name: 'username', type: 'varchar' })
   userName: string;
 

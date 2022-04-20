@@ -2,6 +2,7 @@ import {
   Body,
   Controller,
   Get,
+  Patch,
   Post,
   UseGuards,
   UsePipes,
@@ -10,6 +11,7 @@ import {
 import { AuthGuard } from '@nestjs/passport';
 import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 import { ClientDto } from './dto/client.dto';
+import { UpdateClientDto } from './dto/update-client.dto';
 import { Client } from './entity/client.entity';
 import { ClientPayload } from './interface/client-payload.interface';
 import { ClientService } from './service/client.service';
@@ -31,5 +33,10 @@ export class ClientController {
   @UsePipes(ValidationPipe)
   createClient(@Body() clientDto: ClientDto): Promise<Client> {
     return this.clientService.createClient(clientDto);
+  }
+
+  @Patch()
+  updateClientById(@Body() clientDto: UpdateClientDto): Promise<ClientPayload> {
+    return this.clientService.updateClient(clientDto);
   }
 }

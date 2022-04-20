@@ -1,6 +1,7 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { ClientDto } from '../dto/client.dto';
+import { UpdateClientDto } from '../dto/update-client.dto';
 import { Client } from '../entity/client.entity';
 import { ClientPayload } from '../interface/client-payload.interface';
 import { ClientRepository } from '../repository/client.repository';
@@ -18,5 +19,27 @@ export class ClientService {
 
   async createClient(client: ClientDto): Promise<Client> {
     return this.clientRepository.createClient(client);
+  }
+
+  async updateClient(clientDto: UpdateClientDto): Promise<Client> {
+    const client = await this.getTodoById(clientDto.id);
+    client.description = clientDto.description;
+    client.blocked = clientDto.blocked;
+    client.invited = clientDto.invited;
+
+    await client.save();
+
+    return client;
+  }
+
+  async getTodoById(id: string): Promise<Client> {
+    const todo = await this.clientRepository.findOne({
+      where: { id },
+    });
+
+    if (!todo) {
+      throw new NotFoundException(`This ${id} is not found`);
+    }
+    return todo;
   }
 }

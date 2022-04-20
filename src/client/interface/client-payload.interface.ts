@@ -1,7 +1,7 @@
 import { UserState } from '../entity/client.entity';
 
 export interface ClientPayload {
-  id?: number;
+  id?: string;
   userName: string;
   inn: number;
   email: string;

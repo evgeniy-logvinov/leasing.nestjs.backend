@@ -2,7 +2,6 @@ import { ApiProperty } from '@nestjs/swagger';
 import {
   IsBoolean,
   IsEmail,
-  IsEmpty,
   IsNotEmpty,
   IsNumber,
   IsOptional,
@@ -12,7 +11,13 @@ import {
   MinLength,
 } from 'class-validator';
 
-export class ClientDto {
+export class UpdateClientDto {
+  @ApiProperty()
+  @IsUUID()
+  // @MinLength(8)
+  // @MaxLength(9)
+  id: string;
+
   @ApiProperty()
   @IsNumber()
   // @MinLength(8)
@@ -29,4 +34,20 @@ export class ClientDto {
   @MinLength(4)
   @MaxLength(150)
   userName: string;
+
+  @ApiProperty()
+  @IsBoolean()
+  @IsOptional()
+  blocked: boolean;
+
+  @ApiProperty()
+  @IsBoolean()
+  @IsOptional()
+  invited: boolean;
+
+  @ApiProperty()
+  @IsString()
+  @IsOptional()
+  @MaxLength(150)
+  description: string;
 }

@@ -8,7 +8,7 @@ import {
   MinLength,
 } from 'class-validator';
 
-export class ClientDto {
+export class LeasingCompanyDto {
   @ApiProperty()
   @IsNumber()
   // @MinLength(8)

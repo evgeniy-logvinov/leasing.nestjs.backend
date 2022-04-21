@@ -1,6 +1,6 @@
 import { UserState } from 'src/utils/types';
 
-export interface ClientPayload {
+export interface LeasingCompanyPayload {
   id?: string;
   userName: string;
   inn: number;

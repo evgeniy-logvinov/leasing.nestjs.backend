@@ -3,7 +3,7 @@ import { UserState } from 'src/utils/types';
 import { Column, CreateDateColumn, Entity } from 'typeorm';
 
 @Entity()
-export class Client extends LeasingBaseEntity {
+export class LeasingCompany extends LeasingBaseEntity {
   @Column({ name: 'username', type: 'varchar' })
   userName: string;
 
@@ -31,6 +31,9 @@ export class Client extends LeasingBaseEntity {
 
   @Column({ type: 'boolean', default: false })
   invited: boolean;
+
+  @Column({ type: 'boolean', default: false })
+  accreditation: boolean;
 
   @Column({ nullable: true })
   description: string;

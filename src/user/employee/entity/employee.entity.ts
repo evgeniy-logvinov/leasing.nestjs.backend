@@ -1,4 +1,5 @@
-import { Department } from 'src/user/department/entity/department.entity';
+import { AnaliticsDepartment } from 'src/user/analitics-department/entity/analitics-department.entity';
+import { Region } from 'src/user/region/entity/region.entity';
 import { LeasingBaseEntity } from 'src/utils/entities';
 import { Column, CreateDateColumn, Entity, ManyToOne } from 'typeorm';
 
@@ -13,8 +14,11 @@ export class Employee extends LeasingBaseEntity {
   @Column({ name: 'patronymic', type: 'varchar' })
   patronymic: string;
 
-  @ManyToOne((type) => Department, (department) => department.id)
-  department: Department;
+  @ManyToOne((type) => Region, (region) => region.id)
+  region: Region;
+
+  @ManyToOne((type) => Region, (analiticsDepartment) => analiticsDepartment.id)
+  analiticsDepartment: AnaliticsDepartment;
 
   @CreateDateColumn({ type: 'timestamp' })
   createdDate: Date;

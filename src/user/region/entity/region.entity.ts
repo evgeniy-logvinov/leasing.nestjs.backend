@@ -1,15 +1,17 @@
 import { Employee } from 'src/user/employee/entity/employee.entity';
+import { SalesDepartment } from 'src/user/sales-department/entity/sales-department.entity';
 import { LeasingBaseEntity } from 'src/utils/entities';
 import {
   Column,
   CreateDateColumn,
   Entity,
   JoinColumn,
+  ManyToOne,
   OneToMany,
 } from 'typeorm';
 
 @Entity()
-export class Department extends LeasingBaseEntity {
+export class Region extends LeasingBaseEntity {
   @Column({ type: 'varchar' })
   name: string;
 
@@ -17,6 +19,12 @@ export class Department extends LeasingBaseEntity {
   // @OneToMany((type) => Employee, (employee) => employee.id, { eager: true }, , { cascade: ['insert', 'update'] })
   @JoinColumn({ name: 'empoyee_id' })
   employees: Employee[];
+
+  @ManyToOne((type) => SalesDepartment, (salesDepartment) => salesDepartment.id)
+  region: SalesDepartment;
+
+  @Column({ type: 'varchar' })
+  headOfDepartment: string;
 
   @CreateDateColumn({ type: 'timestamp' })
   createdDate: Date;

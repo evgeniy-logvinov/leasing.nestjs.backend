@@ -11,10 +11,9 @@ import {
   MaxLength,
   MinLength,
 } from 'class-validator';
-import { EmployeeDto } from 'src/user/employee/dto/employee.dto';
-import { Employee } from 'src/user/employee/entity/employee.entity';
+import { Region } from 'src/user/region/entity/region.entity';
 
-export class UpdateDepartmentDto {
+export class UpdateSalesDepartmentDto {
   @ApiProperty()
   @IsUUID()
   // @MinLength(8)
@@ -22,11 +21,11 @@ export class UpdateDepartmentDto {
   id: string;
 
   @ApiProperty()
-  @IsString()
-  @MaxLength(150)
-  name: string;
+  @IsArray()
+  regions: Region[];
 
   @ApiProperty()
-  @IsArray()
-  employees: Employee[];
+  @IsString()
+  @MaxLength(150)
+  headOfDepartment: string;
 }

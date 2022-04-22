@@ -18,6 +18,9 @@ import { AnaliticsDepartmentRepository } from './analitics-department/repository
 import { AnaliticsDepartmentService } from './analitics-department/service/analitics-department.service';
 import { SalesDepartmentRepository } from './sales-department/repository/sales-department.repository';
 import { SalesDepartmentService } from './sales-department/service/sales-department.service';
+import { LeasingCompanyEmployeesController } from './leasing-company-employees/leasing-company-employees.controller';
+import { LeasingCompanyEmployeesService } from './leasing-company-employees/service/leasing-company-employees.service';
+import { LeasingCompanyEmployeesRepository } from './leasing-company-employees/repository/leasing-company-employees.repository';
 
 // TODO: check modules
 @Module({
@@ -33,9 +36,15 @@ import { SalesDepartmentService } from './sales-department/service/sales-departm
       RegionRepository,
       AnaliticsDepartmentRepository,
       SalesDepartmentRepository,
+      LeasingCompanyEmployeesRepository,
     ]),
   ],
-  controllers: [UserController, ClientController, LeasingCompanyController],
+  controllers: [
+    UserController,
+    ClientController,
+    LeasingCompanyController,
+    LeasingCompanyEmployeesController,
+  ],
   providers: [
     UserService,
     ClientService,
@@ -44,6 +53,7 @@ import { SalesDepartmentService } from './sales-department/service/sales-departm
     RegionService,
     AnaliticsDepartmentService,
     SalesDepartmentService,
+    LeasingCompanyEmployeesService,
   ],
 })
 export class UserModule {}

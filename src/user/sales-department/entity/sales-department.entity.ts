@@ -12,9 +12,8 @@ import {
 
 @Entity()
 export class SalesDepartment extends LeasingBaseEntity {
-  @OneToMany((type) => Region, (region) => region.id, { eager: true })
+  @OneToMany((type) => Region, (region) => region.salesDepartment, { eager: true })
   // @OneToMany((type) => Employee, (employee) => employee.id, { eager: true }, , { cascade: ['insert', 'update'] })
-  @JoinColumn({ name: 'region_id' })
   regions: Region[];
 
   @Column({ type: 'varchar' })
@@ -22,8 +21,9 @@ export class SalesDepartment extends LeasingBaseEntity {
 
   @ManyToOne(
     (type) => LeasingCompanyEmployees,
-    (leasingCompanyEmployees) => leasingCompanyEmployees.id,
+    (leasingCompanyEmployees) => leasingCompanyEmployees.salesDepartment,
   )
+  // @JoinColumn({ name: 'leasing_company_employees_id' })
   leasingCompanyEmployees: LeasingCompanyEmployees;
 
   @CreateDateColumn({ type: 'timestamp' })

@@ -15,13 +15,13 @@ export class Region extends LeasingBaseEntity {
   @Column({ type: 'varchar' })
   name: string;
 
-  @OneToMany((type) => Employee, (employee) => employee.id, { eager: true })
+  @OneToMany((type) => Employee, (employee) => employee.regions, { eager: true })
   // @OneToMany((type) => Employee, (employee) => employee.id, { eager: true }, , { cascade: ['insert', 'update'] })
-  @JoinColumn({ name: 'empoyee_id' })
   employees: Employee[];
 
-  @ManyToOne((type) => SalesDepartment, (salesDepartment) => salesDepartment.id)
-  region: SalesDepartment;
+  @ManyToOne((type) => SalesDepartment, (salesDepartment) => salesDepartment.regions)
+  @JoinColumn({ name: 'region_id' })
+  salesDepartment: SalesDepartment;
 
   @Column({ type: 'varchar' })
   headOfDepartment: string;

@@ -9,4 +9,4 @@ import { LeasingCompanyEmployeesService } from './service/leasing-company-employ
   controllers: [LeasingCompanyEmployeesController],
   providers: [LeasingCompanyEmployeesService],
 })
-export class LeasingCompanyModule {}
+export class LeasingCompanyEmployeesModule {}

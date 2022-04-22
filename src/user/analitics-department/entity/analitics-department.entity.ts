@@ -12,9 +12,10 @@ import {
 
 @Entity()
 export class AnaliticsDepartment extends LeasingBaseEntity {
-  @OneToMany((type) => Employee, (employee) => employee.id, { eager: true })
+  @OneToMany((type) => Employee, (employee) => employee.analiticsDepartment, {
+    eager: true,
+  })
   // @OneToMany((type) => Employee, (employee) => employee.id, { eager: true }, , { cascade: ['insert', 'update'] })
-  @JoinColumn({ name: 'empoyee_id' })
   employees: Employee[];
 
   @Column({ type: 'varchar' })
@@ -22,8 +23,9 @@ export class AnaliticsDepartment extends LeasingBaseEntity {
 
   @ManyToOne(
     (type) => LeasingCompanyEmployees,
-    (leasingCompanyEmployees) => leasingCompanyEmployees.id,
+    (leasingCompanyEmployees) => leasingCompanyEmployees.analiticsDepartment,
   )
+  // @JoinColumn({ name: 'leasing_company_employees_id' })
   leasingCompanyEmployees: LeasingCompanyEmployees;
 
   @CreateDateColumn({ type: 'timestamp' })

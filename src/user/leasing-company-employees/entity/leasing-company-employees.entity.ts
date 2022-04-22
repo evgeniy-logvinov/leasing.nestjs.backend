@@ -1,24 +1,22 @@
 import { AnaliticsDepartment } from 'src/user/analitics-department/entity/analitics-department.entity';
 import { SalesDepartment } from 'src/user/sales-department/entity/sales-department.entity';
 import { LeasingBaseEntity } from 'src/utils/entities';
-import { CreateDateColumn, Entity, JoinColumn, OneToMany } from 'typeorm';
+import { CreateDateColumn, Entity, OneToMany } from 'typeorm';
 
 @Entity()
 export class LeasingCompanyEmployees extends LeasingBaseEntity {
   @OneToMany(
     (type) => AnaliticsDepartment,
-    (analiticsDepartment) => analiticsDepartment.id,
+    (analiticsDepartment) => analiticsDepartment.leasingCompanyEmployees,
     { eager: true },
   )
-  @JoinColumn({ name: 'analitics_department_id' })
   analiticsDepartment: AnaliticsDepartment[];
 
   @OneToMany(
     (type) => SalesDepartment,
-    (salesDepartment) => salesDepartment.id,
+    (salesDepartment) => salesDepartment.leasingCompanyEmployees,
     { eager: true },
   )
-  @JoinColumn({ name: 'sales_department_id' })
   salesDepartment: SalesDepartment[];
 
   @CreateDateColumn({ type: 'timestamp' })

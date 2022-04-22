@@ -1,7 +1,13 @@
 import { AnaliticsDepartment } from 'src/user/analitics-department/entity/analitics-department.entity';
 import { Region } from 'src/user/region/entity/region.entity';
 import { LeasingBaseEntity } from 'src/utils/entities';
-import { Column, CreateDateColumn, Entity, ManyToOne } from 'typeorm';
+import {
+  Column,
+  CreateDateColumn,
+  Entity,
+  JoinColumn,
+  ManyToOne,
+} from 'typeorm';
 
 @Entity()
 export class Employee extends LeasingBaseEntity {
@@ -14,10 +20,15 @@ export class Employee extends LeasingBaseEntity {
   @Column({ name: 'patronymic', type: 'varchar' })
   patronymic: string;
 
-  @ManyToOne((type) => Region, (region) => region.id)
-  region: Region;
+  @ManyToOne((type) => Region, (region) => region.employees)
+  // @JoinColumn({ name: 'region_id' })
+  regions: Region;
 
-  @ManyToOne((type) => Region, (analiticsDepartment) => analiticsDepartment.id)
+  @ManyToOne(
+    (type) => AnaliticsDepartment,
+    (analiticsDepartment) => analiticsDepartment.employees,
+  )
+  // @JoinColumn({ name: 'analitics-department_id' })
   analiticsDepartment: AnaliticsDepartment;
 
   @CreateDateColumn({ type: 'timestamp' })

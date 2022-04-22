@@ -1,7 +1,7 @@
 import { UserState } from 'src/utils/types';
 
 export interface ClientPayload {
-  id?: string;
+  id: string;
   userName: string;
   inn: number;
   email: string;

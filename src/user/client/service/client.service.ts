@@ -22,7 +22,7 @@ export class ClientService {
   }
 
   async updateClient(clientDto: UpdateClientDto): Promise<Client> {
-    const client = await this.getTodoById(clientDto.id);
+    const client = await this.getClientById(clientDto.id);
     client.description = clientDto.description;
     client.blocked = clientDto.blocked;
     client.invited = clientDto.invited;
@@ -32,14 +32,14 @@ export class ClientService {
     return client;
   }
 
-  async getTodoById(id: string): Promise<Client> {
-    const todo = await this.clientRepository.findOne({
+  async getClientById(id: string): Promise<Client> {
+    const client = await this.clientRepository.findOne({
       where: { id },
     });
 
-    if (!todo) {
+    if (!client) {
       throw new NotFoundException(`This ${id} is not found`);
     }
-    return todo;
+    return client;
   }
 }

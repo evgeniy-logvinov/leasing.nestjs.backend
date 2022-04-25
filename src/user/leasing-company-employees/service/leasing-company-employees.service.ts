@@ -3,7 +3,6 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { LeasingCompanyEmployeesDto } from '../dto/leasing-company-employees.dto';
 import { UpdateLeasingCompanyEmployeesDto } from '../dto/update-leasing-company-employees.dto';
 import { LeasingCompanyEmployees } from '../entity/leasing-company-employees.entity';
-import { LeasingCompanyEmployeesPayload } from '../interface/leasing-company-employees-payload.interface';
 import { LeasingCompanyEmployeesRepository } from '../repository/leasing-company-employees.repository';
 
 @Injectable()
@@ -31,10 +30,10 @@ export class LeasingCompanyEmployeesService {
     const leasingCompanyEmployees = await this.getLeasingCompanyEmployeesById(
       leasingCompanyEmployeesDto.id,
     );
-    leasingCompanyEmployees.analiticsDepartment =
-      leasingCompanyEmployeesDto.analiticsDepartment;
-    leasingCompanyEmployees.salesDepartment =
-      leasingCompanyEmployeesDto.salesDepartment;
+    // leasingCompanyEmployees.analiticsDepartment =
+    //   leasingCompanyEmployeesDto.analiticsDepartment;
+    // leasingCompanyEmployees.salesDepartment =
+    //   leasingCompanyEmployeesDto.salesDepartment;
 
     await leasingCompanyEmployees.save();
 
@@ -44,13 +43,14 @@ export class LeasingCompanyEmployeesService {
   async getLeasingCompanyEmployeesById(
     id: string,
   ): Promise<LeasingCompanyEmployees> {
-    const todo = await this.leasingCompanyEmployeesRepository.findOne({
-      where: { id },
-    });
+    const leasingCompanyEmployees =
+      await this.leasingCompanyEmployeesRepository.findOne({
+        where: { leasingCompany: id },
+      });
 
-    if (!todo) {
+    if (!leasingCompanyEmployees) {
       throw new NotFoundException(`This ${id} is not found`);
     }
-    return todo;
+    return leasingCompanyEmployees;
   }
 }

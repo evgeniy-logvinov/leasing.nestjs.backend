@@ -107,3 +107,5 @@ sudo chmod -R 777 ./pgadmin-data/
 docker-compose up --build
 docker-compose run nestjs npm run typeorm:generate AnyNameYouLike
 docker-compose run nestjs npm run typeorm:run
+
+remove all and migrations too and start build

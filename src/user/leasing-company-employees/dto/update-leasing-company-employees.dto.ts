@@ -5,6 +5,7 @@ import {
   IsEmail,
   IsNotEmpty,
   IsNumber,
+  IsObject,
   IsOptional,
   IsString,
   IsUUID,
@@ -22,14 +23,14 @@ export class UpdateLeasingCompanyEmployeesDto {
   id: string;
 
   @ApiProperty()
-  @IsArray()
+  @IsObject()
   // @MinLength(8)
   // @MaxLength(9)
-  analiticsDepartment: AnaliticsDepartment[];
+  analiticsDepartment: AnaliticsDepartment;
 
   @ApiProperty()
-  @IsArray()
+  @IsObject()
   // @MinLength(8)
   // @MaxLength(9)
-  salesDepartment: SalesDepartment[];
+  salesDepartment: SalesDepartment;
 }

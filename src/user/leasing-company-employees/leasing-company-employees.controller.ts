@@ -2,6 +2,9 @@ import {
   Body,
   Controller,
   Get,
+  Param,
+  ParseIntPipe,
+  ParseUUIDPipe,
   Patch,
   Post,
   UseGuards,
@@ -13,7 +16,6 @@ import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 import { LeasingCompanyEmployeesDto } from './dto/leasing-company-employees.dto';
 import { UpdateLeasingCompanyEmployeesDto } from './dto/update-leasing-company-employees.dto';
 import { LeasingCompanyEmployees } from './entity/leasing-company-employees.entity';
-import { LeasingCompanyEmployeesPayload } from './interface/leasing-company-employees-payload.interface';
 import { LeasingCompanyEmployeesService } from './service/leasing-company-employees.service';
 
 @ApiTags('LeasingCompanyEmployees')
@@ -26,8 +28,17 @@ export class LeasingCompanyEmployeesController {
   ) {}
 
   @Get()
-  getAllLeasingCompanies(): Promise<LeasingCompanyEmployees[]> {
+  getAllLeasingCompanyEmployees(): Promise<LeasingCompanyEmployees[]> {
     return this.leasingCompanyEmployeesService.getAllLeasingCompaniesEmployees();
+  }
+
+  @Get('/:id')
+  getLeasingCompanyEmployeesById(
+    @Param('id', ParseUUIDPipe) id: string,
+  ): Promise<LeasingCompanyEmployees> {
+    return this.leasingCompanyEmployeesService.getLeasingCompanyEmployeesById(
+      id,
+    );
   }
 
   @Post()

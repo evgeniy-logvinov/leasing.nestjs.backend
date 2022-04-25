@@ -8,6 +8,7 @@
 
 # Migration folder
 ./src/migration/*.ts
+/src/migration/*.ts
 
 # Keep migration folder
 ./src/migration/.gitkeep

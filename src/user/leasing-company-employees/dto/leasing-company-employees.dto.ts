@@ -4,6 +4,7 @@ import {
   IsEmail,
   IsNotEmpty,
   IsNumber,
+  IsObject,
   IsString,
   MaxLength,
   MinLength,
@@ -13,14 +14,14 @@ import { SalesDepartment } from 'src/user/sales-department/entity/sales-departme
 
 export class LeasingCompanyEmployeesDto {
   @ApiProperty()
-  @IsArray()
+  @IsObject()
   // @MinLength(8)
   // @MaxLength(9)
-  analiticsDepartment: AnaliticsDepartment[];
+  analiticsDepartment: AnaliticsDepartment;
 
   @ApiProperty()
-  @IsArray()
+  @IsObject()
   // @MinLength(8)
   // @MaxLength(9)
-  salesDepartment: SalesDepartment[];
+  salesDepartment: SalesDepartment;
 }

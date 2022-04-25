@@ -8,6 +8,7 @@ import {
   JoinColumn,
   ManyToOne,
   OneToMany,
+  OneToOne,
 } from 'typeorm';
 
 @Entity()
@@ -21,11 +22,8 @@ export class AnaliticsDepartment extends LeasingBaseEntity {
   @Column({ type: 'varchar' })
   headOfDepartment: string;
 
-  @ManyToOne(
-    (type) => LeasingCompanyEmployees,
-    (leasingCompanyEmployees) => leasingCompanyEmployees.analiticsDepartment,
-  )
-  // @JoinColumn({ name: 'leasing_company_employees_id' })
+  @OneToOne((type) => LeasingCompanyEmployees, { eager: true })
+  @JoinColumn()
   leasingCompanyEmployees: LeasingCompanyEmployees;
 
   @CreateDateColumn({ type: 'timestamp' })

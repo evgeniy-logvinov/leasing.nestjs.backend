@@ -1,17 +1,14 @@
-import { LeasingBaseEntity } from 'src/utils/entities';
+import { LeasingBaseUser } from 'src/user/entity/leasing-base-user.entity';
 import { UserState } from 'src/utils/types';
-import { Column, CreateDateColumn, Entity } from 'typeorm';
+import { ChildEntity, Column } from 'typeorm';
 
-@Entity()
-export class Client extends LeasingBaseEntity {
+@ChildEntity()
+export class Client extends LeasingBaseUser {
   @Column({ name: 'username', type: 'varchar' })
   userName: string;
 
   @Column({ type: 'int' })
   inn: number;
-
-  @Column({ type: 'varchar', unique: true })
-  email: string;
 
   @Column({
     type: 'enum',
@@ -19,12 +16,6 @@ export class Client extends LeasingBaseEntity {
     default: UserState.UNREG,
   })
   state: UserState;
-
-  @CreateDateColumn({ type: 'timestamp' })
-  createdDate: Date;
-
-  @CreateDateColumn({ type: 'timestamp' })
-  updatedDate: Date;
 
   @Column({ type: 'boolean', default: false })
   blocked: boolean;

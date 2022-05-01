@@ -20,10 +20,10 @@ import { diskStorage } from 'multer';
 import { UserInfoDto } from './dto/user-info.dto';
 
 // < -- Swagger Implementation Start -- >
-@ApiTags('User')
+@ApiTags('LeasingUser')
 @ApiBearerAuth()
 // < -- Swagger Implementation End -- >
-@Controller('user')
+@Controller('leasing-user')
 @UseGuards(AuthGuard())
 export class UserController {
   constructor(private userService: UserService) {}

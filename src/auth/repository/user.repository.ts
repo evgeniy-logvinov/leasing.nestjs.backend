@@ -10,6 +10,8 @@ import { SignInCredentialsDto } from '../dto/signin-credentials.dto';
 import { User } from '../entity/user.entity';
 import { UserInfo } from '../../user/entity/user-info.entity';
 import { JwtPayload } from '../interface/jwt-payload.interface';
+import { LeasingBaseUser } from 'src/user/entity/leasing-base-user.entity';
+import { LeasingAdmin } from 'src/user/admin/entity/leasing-admin.entity';
 
 @EntityRepository(User)
 export class UserRepository extends Repository<User> {
@@ -28,7 +30,13 @@ export class UserRepository extends Repository<User> {
       userInfo.address = 'defaultAddress';
       await userInfo.save();
 
+      const leasingBaseUser = new LeasingAdmin();
+      leasingBaseUser.email = 'aaaaaa@mail.ru';
+      leasingBaseUser.isAdmin = true;
+      await leasingBaseUser.save();
+
       user.userInfo = userInfo;
+      user.leasingBaseUser = leasingBaseUser;
       await user.save();
 
       return { message: 'User successfully created !' };
@@ -51,6 +59,7 @@ export class UserRepository extends Repository<User> {
       return {
         email: auth.email,
         userInfo: auth.userInfo,
+        leasingBaseUser: auth.leasingBaseUser,
       };
     } else {
       return null;

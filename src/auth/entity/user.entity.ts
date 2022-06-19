@@ -9,9 +9,7 @@ import {
   Unique,
 } from 'typeorm';
 import * as bcrypt from 'bcrypt';
-import { Todo } from '../../todo/entity/todo.entity';
-import { UserInfo } from '../../user/entity/user-info.entity';
-import { LeasingBaseUser } from 'src/user/entity/leasing-base-user.entity';
+import { LeasingBaseUser } from 'src/leasing-base-user/entity/leasing-base-user.entity';
 
 @Entity()
 @Unique(['email'])

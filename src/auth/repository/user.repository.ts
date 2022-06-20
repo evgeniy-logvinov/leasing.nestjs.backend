@@ -10,11 +10,13 @@ import { SignInCredentialsDto } from '../dto/signin-credentials.dto';
 import { User } from '../entity/user.entity';
 import { JwtPayload } from '../interface/jwt-payload.interface';
 import { LeasingAdmin } from 'src/leasing-base-user/admin/entity/leasing-admin.entity';
+import { Role } from 'src/leasing-base-user/role/entity/role.entity';
 
 @EntityRepository(User)
 export class UserRepository extends Repository<User> {
   async signUp(
     signupCredentialsDto: SignupCredentialsDto,
+    role: Role,
   ): Promise<{ message: string }> {
     const { email, password } = signupCredentialsDto;
 
@@ -26,6 +28,7 @@ export class UserRepository extends Repository<User> {
     try {
       const leasingBaseUser = new LeasingAdmin();
       leasingBaseUser.isAdmin = true;
+      leasingBaseUser.role = role;
       await leasingBaseUser.save();
 
       user.leasingBaseUser = leasingBaseUser;

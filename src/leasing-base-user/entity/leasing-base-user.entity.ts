@@ -21,7 +21,9 @@ export abstract class LeasingBaseUser extends BaseEntity {
   @CreateDateColumn({ type: 'timestamp' })
   updatedDate: Date;
 
-  @ManyToOne((type) => Role, (role) => role.id)
+  @ManyToOne((type) => Role, (role) => role.id, {
+    eager: true,
+  })
   @JoinColumn({ name: 'role_id' })
   role: Role;
 }

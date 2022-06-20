@@ -23,7 +23,9 @@ export class Role extends BaseEntity {
   @CreateDateColumn({ type: 'timestamp' })
   updatedDate: Date;
 
-  @ManyToMany(() => Permission)
+  @ManyToMany(() => Permission, {
+    eager: true,
+  })
   @JoinTable()
   permissions: Permission[];
 }

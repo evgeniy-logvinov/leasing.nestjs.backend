@@ -6,6 +6,8 @@ import { AuthController } from './auth.controller';
 import { UserRepository } from './repository/user.repository';
 import { AuthService } from './service/auth.service';
 import { JwtStrategy } from './jwt-strategy';
+import { RoleRepository } from 'src/leasing-base-user/role/repository/role.repository';
+import { LeasingBaseUserRepository } from 'src/leasing-base-user/repository/leasing-base-user.repository';
 
 @Global()
 @Module({
@@ -17,7 +19,11 @@ import { JwtStrategy } from './jwt-strategy';
         expiresIn: +process.env.APP_EXPIRES,
       },
     }),
-    TypeOrmModule.forFeature([UserRepository]),
+    TypeOrmModule.forFeature([
+      UserRepository,
+      RoleRepository,
+      LeasingBaseUserRepository,
+    ]),
   ],
   controllers: [AuthController],
   providers: [AuthService, JwtStrategy],

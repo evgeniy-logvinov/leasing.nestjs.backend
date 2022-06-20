@@ -2,6 +2,8 @@ version: '3'
 services: 
   db:
     image: postgres
+    logging:
+      driver: none
     restart: always
     environment: 
       - POSTGRES_USER=${DATABASE_USER}
@@ -40,6 +42,8 @@ services:
       - /app/node_modules
   pgadmin:
     image: dpage/pgadmin4
+    logging:
+      driver: none
     restart: always
     container_name: nest-pgadmin4
     environment: 

@@ -10,6 +10,10 @@ services:
     container_name: postgres-db
     volumes:
       - ./pgdata:/var/lib/postgresql/data
+      # copy the sql script to create tables
+      # script with preinstall script
+      - ./init.sql:/init.sql
+      # - ./init.sql/init.sql:/docker-entrypoint-initdb.d/init.sql
   nestjs:
     build: 
       context: .

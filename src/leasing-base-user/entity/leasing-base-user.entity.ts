@@ -2,9 +2,12 @@ import {
   BaseEntity,
   CreateDateColumn,
   Entity,
+  JoinColumn,
+  ManyToOne,
   PrimaryGeneratedColumn,
   TableInheritance,
 } from 'typeorm';
+import { Role } from '../role/entity/role.entity';
 
 @Entity()
 @TableInheritance({ column: { type: 'varchar', name: 'type' } })
@@ -17,4 +20,8 @@ export abstract class LeasingBaseUser extends BaseEntity {
 
   @CreateDateColumn({ type: 'timestamp' })
   updatedDate: Date;
+
+  @ManyToOne((type) => Role, (role) => role.id)
+  @JoinColumn({ name: 'role_id' })
+  role: Role;
 }

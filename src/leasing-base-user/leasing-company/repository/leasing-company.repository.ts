@@ -1,3 +1,4 @@
+import { Role } from 'src/leasing-base-user/role/entity/role.entity';
 import { EntityRepository, Repository } from 'typeorm';
 import { LeasingCompanyDto } from '../dto/leasing-company.dto';
 import { LeasingCompany } from '../entity/leasing-company.entity';
@@ -6,6 +7,7 @@ import { LeasingCompany } from '../entity/leasing-company.entity';
 export class LeasingCompanyRepository extends Repository<LeasingCompany> {
   async createLeasingCompany(
     leasingCompanyDto: LeasingCompanyDto,
+    role: Role,
   ): Promise<LeasingCompany> {
     const { userName, inn } = leasingCompanyDto;
 
@@ -13,6 +15,7 @@ export class LeasingCompanyRepository extends Repository<LeasingCompany> {
 
     leasingCompany.userName = userName;
     leasingCompany.inn = inn;
+    leasingCompany.role = role;
 
     await leasingCompany.save();
 

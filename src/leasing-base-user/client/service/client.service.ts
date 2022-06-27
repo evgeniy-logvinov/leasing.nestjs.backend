@@ -1,5 +1,6 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
+import { RoleRepository } from 'src/leasing-base-user/role/repository/role.repository';
 import { ClientDto } from '../dto/client.dto';
 import { UpdateClientDto } from '../dto/update-client.dto';
 import { Client } from '../entity/client.entity';
@@ -11,6 +12,8 @@ export class ClientService {
   constructor(
     @InjectRepository(ClientRepository)
     private clientRepository: ClientRepository,
+    @InjectRepository(RoleRepository)
+    private roleRepository: RoleRepository,
   ) {}
 
   async getAllClients(): Promise<ClientPayload[]> {
@@ -18,7 +21,14 @@ export class ClientService {
   }
 
   async createClient(client: ClientDto): Promise<Client> {
-    return this.clientRepository.createClient(client);
+    const role = await this.roleRepository.findOne({
+      name: 'ROLE_LEASING_CLIENT',
+    });
+    if (!role) {
+      throw new NotFoundException(`This ROLE_LEASING_CLIENT is not found`);
+    }
+
+    return this.clientRepository.createClient(client, role);
   }
 
   async updateClient(clientDto: UpdateClientDto): Promise<Client> {

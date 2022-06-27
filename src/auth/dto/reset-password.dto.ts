@@ -4,18 +4,10 @@ import {
   MinLength,
   MaxLength,
   Matches,
-  IsEmail,
   IsNotEmpty,
 } from 'class-validator';
 
-export class SignupCredentialsDto {
-  @ApiProperty({ minimum: 4, maximum: 50 })
-  @IsEmail()
-  @IsNotEmpty()
-  @MinLength(4)
-  @MaxLength(50)
-  email: string;
-
+export class ResetPasswordDto {
   @ApiProperty({
     minimum: 6,
     maximum: 20,
@@ -29,4 +21,7 @@ export class SignupCredentialsDto {
     message: 'Password too weak',
   })
   password: string;
+
+  @ApiProperty({ description: 'Reset password UUID' })
+  id: string;
 }

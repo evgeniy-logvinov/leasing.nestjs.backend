@@ -32,6 +32,9 @@ services:
       - POSTGRES_PORT=${POSTGRES_PORT}
       - APP_EXPIRES=${APP_EXPIRES}
       - APP_PORT=${APP_PORT}
+      - BASE_URL_FE=${BASE_URL_FE}
+      - CONFIRM_PATH_FE=${CONFIRM_PATH_FE}
+      - RESET_PASSWORD_PATH_FE=${RESET_PASSWORD_PATH_FE}
     ports:
       - "3000:3000" # expose-to-the-world : only-in-the-docker
     container_name: nest-leasing-app-be

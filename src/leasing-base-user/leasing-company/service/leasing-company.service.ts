@@ -1,5 +1,6 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
+import { RoleRepository } from 'src/leasing-base-user/role/repository/role.repository';
 import { LeasingCompanyDto } from '../dto/leasing-company.dto';
 import { UpdateLeasingCompanyDto } from '../dto/update-leasing-company.dto';
 import { LeasingCompany } from '../entity/leasing-company.entity';
@@ -11,6 +12,8 @@ export class LeasingCompanyService {
   constructor(
     @InjectRepository(LeasingCompanyRepository)
     private leasingCompanyRepository: LeasingCompanyRepository,
+    @InjectRepository(RoleRepository)
+    private roleRepository: RoleRepository,
   ) {}
 
   async getAllLeasingCompanies(): Promise<LeasingCompanyPayload[]> {
@@ -20,7 +23,14 @@ export class LeasingCompanyService {
   async createLeasingCompany(
     company: LeasingCompanyDto,
   ): Promise<LeasingCompany> {
-    return this.leasingCompanyRepository.createLeasingCompany(company);
+    const role = await this.roleRepository.findOne({
+      name: 'ROLE_LEASING_COMPANY',
+    });
+    if (!role) {
+      throw new NotFoundException(`This ROLE_LEASING_COMPANY is not found`);
+    }
+
+    return this.leasingCompanyRepository.createLeasingCompany(company, role);
   }
 
   async updateLeasingCompany(

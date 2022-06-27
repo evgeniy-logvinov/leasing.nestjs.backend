@@ -9,11 +9,11 @@ import {
 } from 'class-validator';
 
 export class SignInCredentialsDto {
-  @ApiProperty({ minimum: 4, maximum: 20 })
+  @ApiProperty({ minimum: 4, maximum: 50 })
   @IsEmail()
   @IsNotEmpty()
   @MinLength(4)
-  @MaxLength(20)
+  @MaxLength(50)
   email: string;
 
   @ApiProperty({
@@ -22,19 +22,11 @@ export class SignInCredentialsDto {
     description: 'At least 1 capital, 1 small, 1 special character & 1 number',
   })
   @IsString()
+  @IsNotEmpty()
   @MinLength(6)
   @MaxLength(20)
   @Matches(/((?=.*\d)|(?=.*\w+))(?![.\n])(?=.*[A-Z])(?=.*[a-z]).*$/, {
     message: 'Password too weak',
   })
   password: string;
-
-  // @Expose()
-  //   @IsEmail()
-  //   @IsNotEmpty()
-  //   @ApiProperty({
-  //       example: 'johndoe@gmail.com',
-  //       description: 'Username',
-  //   })
-  //   username: string
 }

@@ -21,6 +21,7 @@ import { SalesDepartmentService } from './sales-department/service/sales-departm
 import { LeasingCompanyEmployeesController } from './leasing-company-employees/leasing-company-employees.controller';
 import { LeasingCompanyEmployeesService } from './leasing-company-employees/service/leasing-company-employees.service';
 import { LeasingCompanyEmployeesRepository } from './leasing-company-employees/repository/leasing-company-employees.repository';
+import { RoleRepository } from './role/repository/role.repository';
 
 // TODO: check modules
 @Module({
@@ -37,6 +38,7 @@ import { LeasingCompanyEmployeesRepository } from './leasing-company-employees/r
       AnaliticsDepartmentRepository,
       SalesDepartmentRepository,
       LeasingCompanyEmployeesRepository,
+      RoleRepository,
     ]),
   ],
   controllers: [

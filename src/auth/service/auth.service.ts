@@ -1,35 +1,23 @@
-import {
-  Injectable,
-  NotFoundException,
-  UnauthorizedException,
-} from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
-import { InjectRepository } from '@nestjs/typeorm';
-import { LeasingBaseUserRepository } from 'src/leasing-base-user/repository/leasing-base-user.repository';
-import { RoleRepository } from 'src/leasing-base-user/role/repository/role.repository';
-import { ConfirmEmailDto } from '../dto/confirm-email.dto';
-import { ResetPasswordDto } from '../dto/reset-password.dto';
-import { ResetRequiredDto } from '../dto/reset-required.dto';
-import { SignInCredentialsDto } from '../dto/signin-credentials.dto';
-import { SignupCredentialsDto } from '../dto/signup-credentials.dto';
+import { ConfirmEmailDto } from 'src/user/dto/confirm-email.dto';
+import { CreateAdminDto } from 'src/user/dto/create-admin.dto';
+import { ResetPasswordDto } from 'src/user/dto/reset-password.dto';
+import { ResetRequiredDto } from 'src/user/dto/reset-required.dto';
+import { SignInCredentialsDto } from 'src/user/dto/signin-credentials.dto';
+import { UserService } from 'src/user/service/user.service';
 import { JwtPayload } from '../interface/jwt-payload.interface';
-import { UserRepository } from '../repository/user.repository';
 
 @Injectable()
 export class AuthService {
   constructor(
-    @InjectRepository(UserRepository)
-    private userRepository: UserRepository,
-    private leasingBaseUserRepository: LeasingBaseUserRepository,
-    private roleRepository: RoleRepository,
+    private userService: UserService,
     private jwtService: JwtService,
   ) {}
 
-  async signUp(
-    signupCredentialsDto: SignupCredentialsDto,
-  ): Promise<{ message: string }> {
-    const message = await this.signUpAdmin(signupCredentialsDto);
-    this.sendConfirmationEmail(message.id, signupCredentialsDto.email);
+  async signUp(createAdminDto: CreateAdminDto): Promise<{ message: string }> {
+    const message = await this.signUpAdmin(createAdminDto);
+    this.sendConfirmationEmail(message.id, createAdminDto.email);
     return message;
   }
 
@@ -50,26 +38,21 @@ export class AuthService {
   }
 
   async signUpAdmin(
-    signupCredentialsDto: SignupCredentialsDto,
+    createAdminDto: CreateAdminDto,
   ): Promise<{ message: string; id: string }> {
-    const role = await this.roleRepository.findOne({ name: 'ROLE_ADMIN' });
-    if (!role) {
-      throw new NotFoundException(`This ROLE_ADMIN is not found`);
-    }
-
-    return this.userRepository.signUp(signupCredentialsDto, role);
+    return this.userService.createAdmin(createAdminDto);
   }
 
   async resetPassword(
     resetPasswordDto: ResetPasswordDto,
   ): Promise<{ message: string }> {
-    return this.userRepository.resetPassword(resetPasswordDto);
+    return this.userService.resetPassword(resetPasswordDto);
   }
 
   async resetRequired(
     resetRequiredDto: ResetRequiredDto,
   ): Promise<{ message: string }> {
-    const message = await this.userRepository.resetRequired(resetRequiredDto);
+    const message = await this.userService.resetRequired(resetRequiredDto);
     this.sendResetEmail(message.resetId, resetRequiredDto.email);
     return message;
   }
@@ -77,7 +60,7 @@ export class AuthService {
   async confirmEmail(
     confirmEmailDto: ConfirmEmailDto,
   ): Promise<{ message: string }> {
-    return this.userRepository.confirmEmail(confirmEmailDto);
+    return this.userService.changeConfirmEmail(confirmEmailDto);
   }
 
   async signIn(signInCredentialsDto: SignInCredentialsDto): Promise<{
@@ -86,24 +69,16 @@ export class AuthService {
     role: string;
     permissions: string[];
   }> {
-    const resp = await this.userRepository.validateUserPassword(
+    const payload = await this.userService.validateUserPassword(
       signInCredentialsDto,
     );
-    if (!resp) {
-      throw new UnauthorizedException('Invalid credentials');
-    }
-
-    const payload: JwtPayload = resp;
     const accessToken = await this.jwtService.sign(payload);
-    const leasingUser = await this.leasingBaseUserRepository.findOne({
-      where: { id: payload.leasingBaseUser.id },
-    });
 
     return {
       accessToken,
-      user: resp,
-      permissions: leasingUser.role.permissions.map((perm) => perm.name),
-      role: leasingUser.role.name,
+      user: payload,
+      permissions: payload.permissions,
+      role: payload.role,
     };
   }
 }

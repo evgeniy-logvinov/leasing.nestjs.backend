@@ -1,12 +1,10 @@
-import { Post, Body, ValidationPipe, Controller, Req } from '@nestjs/common';
+import { Post, Body, ValidationPipe, Controller } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
-import { GetUser } from './decorator/get-user.decorator';
-import { ConfirmEmailDto } from './dto/confirm-email.dto';
-import { ResetPasswordDto } from './dto/reset-password.dto';
-import { ResetRequiredDto } from './dto/reset-required.dto';
-import { SignInCredentialsDto } from './dto/signin-credentials.dto';
-import { SignupCredentialsDto } from './dto/signup-credentials.dto';
-import { User } from './entity/user.entity';
+import { ConfirmEmailDto } from 'src/user/dto/confirm-email.dto';
+import { CreateAdminDto } from 'src/user/dto/create-admin.dto';
+import { ResetPasswordDto } from 'src/user/dto/reset-password.dto';
+import { ResetRequiredDto } from 'src/user/dto/reset-required.dto';
+import { SignInCredentialsDto } from 'src/user/dto/signin-credentials.dto';
 import { JwtPayload } from './interface/jwt-payload.interface';
 import { AuthService } from './service/auth.service';
 
@@ -17,7 +15,7 @@ export class AuthController {
 
   @Post('/signup')
   signUp(
-    @Body(ValidationPipe) signupCredentialsDto: SignupCredentialsDto,
+    @Body(ValidationPipe) signupCredentialsDto: CreateAdminDto,
   ): Promise<{ message: string }> {
     console.log('signupCredentialsDto', signupCredentialsDto);
     return this.authService.signUp(signupCredentialsDto);

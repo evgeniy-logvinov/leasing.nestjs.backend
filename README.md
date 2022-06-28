@@ -111,6 +111,7 @@ docker-compose run nestjs npm run typeorm:run
 
 remove all and migrations too and start build
 
+dist pgadmin pgdata
 ### Exec commands from dovker postgresql
 https://stackoverflow.com/questions/34688465/how-do-i-run-a-sql-file-of-inserts-through-docker-run
 https://habr.com/ru/post/578744/

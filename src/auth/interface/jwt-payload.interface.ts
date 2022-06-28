@@ -1,6 +1,7 @@
-import { LeasingBaseUser } from 'src/leasing-base-user/entity/leasing-base-user.entity';
+import { PermissionEnum, RoleEnum } from 'src/utils/entities';
 
 export interface JwtPayload {
   email: string;
-  leasingBaseUser: LeasingBaseUser;
+  role: RoleEnum;
+  permissions: PermissionEnum[];
 }

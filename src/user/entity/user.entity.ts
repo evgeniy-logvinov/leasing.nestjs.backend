@@ -5,13 +5,12 @@ import {
   Entity,
   JoinColumn,
   ManyToOne,
-  OneToOne,
   PrimaryGeneratedColumn,
   Unique,
 } from 'typeorm';
 import * as bcrypt from 'bcrypt';
-import { LeasingUserInfo } from 'src/user-info/entity/leasing-user-info.entity';
 import { Role } from '../role/entity/role.entity';
+import { Exclude } from 'class-transformer';
 
 @Entity()
 @Unique(['email'])
@@ -23,20 +22,18 @@ export class User extends BaseEntity {
   email: string;
 
   @Column({ type: 'varchar', nullable: true })
+  @Exclude({ toPlainOnly: true })
   password: string;
 
-  @Column({ nullable: true })
+  @Column({ nullable: true, select: false })
   resetPasswordId: string;
 
-  @Column({ default: false })
+  @Column({ default: false, select: false })
   isEmailConfirmed: boolean;
 
   @Column({ nullable: true })
+  @Exclude({ toPlainOnly: true })
   salt: string;
-
-  @OneToOne((type) => LeasingUserInfo, { eager: true })
-  @JoinColumn()
-  leasingUserInfo: LeasingUserInfo;
 
   @CreateDateColumn({ type: 'timestamp' })
   createdDate: Date;

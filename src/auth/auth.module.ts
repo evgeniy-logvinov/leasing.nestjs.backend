@@ -5,6 +5,7 @@ import { AuthController } from './auth.controller';
 import { AuthService } from './service/auth.service';
 import { JwtStrategy } from './jwt-strategy';
 import { UserModule } from 'src/user/user.module';
+import { EmailModule } from 'src/email/email.module';
 
 @Global()
 @Module({
@@ -17,6 +18,7 @@ import { UserModule } from 'src/user/user.module';
       },
     }),
     UserModule,
+    EmailModule,
   ],
   controllers: [AuthController],
   providers: [AuthService, JwtStrategy],

@@ -3,7 +3,10 @@ import { UserState } from 'src/utils/types';
 export interface ClientPayload {
   id: string;
   userName: string;
-  inn: number;
+  inn: string;
+  user: {
+    email: string;
+  };
   state: UserState;
   createdDate: Date;
   updatedDate: Date;

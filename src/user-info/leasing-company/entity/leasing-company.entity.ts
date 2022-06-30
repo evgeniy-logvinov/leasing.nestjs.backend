@@ -7,8 +7,8 @@ export class LeasingCompany extends LeasingUserInfo {
   @Column({ name: 'username', type: 'varchar' })
   userName: string;
 
-  @Column({ type: 'int' })
-  inn: number;
+  @Column()
+  inn: string;
 
   @Column({
     type: 'enum',

@@ -47,7 +47,7 @@ export class UserRepository extends Repository<User> {
   async createUser(
     createUserDto: CreateUserDto,
     role: Role,
-  ): Promise<{ message: string; id: string }> {
+  ): Promise<{ message: string; user: User }> {
     const { email } = createUserDto;
 
     try {
@@ -57,7 +57,7 @@ export class UserRepository extends Repository<User> {
 
       await user.save();
 
-      return { message: 'User successfully created !', id: user.id };
+      return { message: 'User successfully created !', user };
     } catch (error) {
       if (error.code === '23505') {
         throw new ConflictException('Email already exists');

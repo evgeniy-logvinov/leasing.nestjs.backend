@@ -1,6 +1,10 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
+import { EmailService } from 'src/email/services/email.service';
+import { User } from 'src/user/entity/user.entity';
+import { UserService } from 'src/user/service/user.service';
 import { ClientDto } from '../dto/client.dto';
+import { InviteClientDto } from '../dto/invite-client.dto';
 import { UpdateClientDto } from '../dto/update-client.dto';
 import { Client } from '../entity/client.entity';
 import { ClientPayload } from '../interface/client-payload.interface';
@@ -11,22 +15,21 @@ export class ClientService {
   constructor(
     @InjectRepository(ClientRepository)
     private clientRepository: ClientRepository,
+    private userService: UserService,
+    private emailService: EmailService,
   ) {}
 
-  async getAllClients(): Promise<ClientPayload[]> {
-    return this.clientRepository.find();
+  getAllClients(): Promise<ClientPayload[]> {
+    return this.clientRepository
+      .createQueryBuilder('client')
+      .leftJoinAndSelect('client.user', 'user')
+      .select(['email', 'client.*'])
+      .getRawMany();
   }
 
   async createClient(client: ClientDto): Promise<Client> {
-    // const role = await this.roleRepository.findOne({
-    //   name: 'ROLE_LEASING_CLIENT',
-    // });
-
-    // if (!role) {
-    //   throw new NotFoundException(`This ROLE_LEASING_CLIENT is not found`);
-    // }
-
-    return this.clientRepository.createClient(client);
+    const result = await this.userService.createClient(client);
+    return await this.clientRepository.createClient(client, result.user);
   }
 
   async updateClient(clientDto: UpdateClientDto): Promise<Client> {
@@ -36,6 +39,18 @@ export class ClientService {
     client.invited = clientDto.invited;
 
     await client.save();
+
+    return client;
+  }
+
+  async inviteClient(inviteClientDto: InviteClientDto): Promise<Client> {
+    const client = await this.getClientById(inviteClientDto.id);
+    client.invited = true;
+
+    await client.save();
+
+    // const resetInfo = await this.userService.resetRequired(client);
+    // this.emailService.sendResetEmail(resetInfo.resetId, client.email);
 
     return client;
   }

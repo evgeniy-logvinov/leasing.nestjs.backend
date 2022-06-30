@@ -11,14 +11,14 @@ export class LeasingUserInfoService {
     private userInfoRepository: LeasingUserInfoRepository,
   ) {}
 
-  async getUser(user: User): Promise<LeasingUserInfo> {
-    const userInfo = await this.userInfoRepository.findOne({
-      where: { id: user.leasingUserInfo.id },
-    });
+  // async getUser(user: User): Promise<LeasingUserInfo> {
+  //   const userInfo = await this.userInfoRepository.findOne({
+  //     where: { id: user.leasingUserInfo.id },
+  //   });
 
-    if (!userInfo) {
-      throw new NotFoundException('User not found.');
-    }
-    return userInfo;
-  }
+  //   if (!userInfo) {
+  //     throw new NotFoundException('User not found.');
+  //   }
+  //   return userInfo;
+  // }
 }

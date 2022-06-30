@@ -1,19 +1,23 @@
 import { ApiProperty } from '@nestjs/swagger';
 import {
+  IsDecimal,
   IsEmail,
   IsNotEmpty,
   IsNumber,
+  IsNumberString,
   IsString,
+  Length,
   MaxLength,
   MinLength,
 } from 'class-validator';
 
 export class ClientDto {
-  @ApiProperty()
-  @IsNumber()
-  // @MinLength(8)
-  // @MaxLength(9)
-  inn: number;
+  @ApiProperty({ minimum: 9, maximum: 11 })
+  @IsNotEmpty()
+  @MinLength(10)
+  @MaxLength(10)
+  @IsNumberString()
+  inn: string;
 
   @ApiProperty({ minimum: 4, maximum: 50 })
   @IsEmail()
@@ -24,6 +28,7 @@ export class ClientDto {
 
   @ApiProperty()
   @IsString()
+  @IsNotEmpty()
   @MinLength(4)
   @MaxLength(150)
   userName: string;

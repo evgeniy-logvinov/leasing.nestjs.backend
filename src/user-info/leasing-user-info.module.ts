@@ -19,7 +19,6 @@ import { LeasingCompanyEmployeesController } from './leasing-company-employees/l
 import { LeasingCompanyEmployeesService } from './leasing-company-employees/service/leasing-company-employees.service';
 import { LeasingCompanyEmployeesRepository } from './leasing-company-employees/repository/leasing-company-employees.repository';
 import { LeasingUserInfoRepository } from './repository/leasing-user-info.repository';
-import { LeasingUserInfoController } from './leasing-user-info.controller';
 import { LeasingUserInfoService } from './service/leasing-user-info.service';
 
 // TODO: check modules
@@ -40,7 +39,6 @@ import { LeasingUserInfoService } from './service/leasing-user-info.service';
     ]),
   ],
   controllers: [
-    LeasingUserInfoController,
     ClientController,
     LeasingCompanyController,
     LeasingCompanyEmployeesController,

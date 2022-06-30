@@ -29,7 +29,6 @@ export class ClientController {
   }
 
   @Post()
-  // TODO: check what it means
   @UsePipes(ValidationPipe)
   createClient(@Body() clientDto: ClientDto): Promise<Client> {
     return this.clientService.createClient(clientDto);
@@ -37,6 +36,11 @@ export class ClientController {
 
   @Patch()
   updateClientById(@Body() clientDto: UpdateClientDto): Promise<ClientPayload> {
+    return this.clientService.updateClient(clientDto);
+  }
+
+  @Patch()
+  inviteClientById(@Body() clientDto: UpdateClientDto): Promise<ClientPayload> {
     return this.clientService.updateClient(clientDto);
   }
 }

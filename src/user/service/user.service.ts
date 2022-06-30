@@ -29,14 +29,14 @@ export class UserService {
 
   async createClient(
     userDto: CreateUserDto,
-  ): Promise<{ message: string; id: string }> {
+  ): Promise<{ message: string; user: User }> {
     const role = await this.roleService.getRole(RoleEnum.ROLE_LEASING_CLIENT);
     return this.userRepository.createUser(userDto, role);
   }
 
   async createCompany(
     userDto: CreateUserDto,
-  ): Promise<{ message: string; id: string }> {
+  ): Promise<{ message: string; user: User }> {
     const role = await this.roleService.getRole(RoleEnum.ROLE_LEASING_COMPANY);
     return this.userRepository.createUser(userDto, role);
   }

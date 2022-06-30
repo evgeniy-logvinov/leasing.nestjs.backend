@@ -3,7 +3,7 @@ import { UserState } from 'src/utils/types';
 export interface LeasingCompanyEmployeesPayload {
   id: string;
   userName: string;
-  inn: number;
+  inn: string;
   email: string;
   state: UserState;
   createdDate: Date;

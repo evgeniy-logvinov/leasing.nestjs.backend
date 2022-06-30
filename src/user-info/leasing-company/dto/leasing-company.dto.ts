@@ -11,9 +11,9 @@ import {
 export class LeasingCompanyDto {
   @ApiProperty()
   @IsNumber()
-  // @MinLength(8)
-  // @MaxLength(9)
-  inn: number;
+  @MinLength(9)
+  @MaxLength(11)
+  inn: string;
 
   @ApiProperty({ minimum: 4, maximum: 50 })
   @IsEmail()

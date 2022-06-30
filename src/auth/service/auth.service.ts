@@ -1,5 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
+import { EmailService } from 'src/email/services/email.service';
 import { ConfirmEmailDto } from 'src/user/dto/confirm-email.dto';
 import { CreateAdminDto } from 'src/user/dto/create-admin.dto';
 import { ResetPasswordDto } from 'src/user/dto/reset-password.dto';
@@ -12,29 +13,14 @@ import { JwtPayload } from '../interface/jwt-payload.interface';
 export class AuthService {
   constructor(
     private userService: UserService,
+    private emailService: EmailService,
     private jwtService: JwtService,
   ) {}
 
   async signUp(createAdminDto: CreateAdminDto): Promise<{ message: string }> {
     const message = await this.signUpAdmin(createAdminDto);
-    this.sendConfirmationEmail(message.id, createAdminDto.email);
+    this.emailService.sendConfirmationEmail(message.id, createAdminDto.email);
     return message;
-  }
-
-  sendConfirmationEmail(userId: string, email: string): void {
-    console.log(
-      'confirmation link',
-      email,
-      `${process.env.BASE_URL_FE}${process.env.CONFIRM_PATH_FE}${userId}`,
-    );
-  }
-
-  sendResetEmail(resetId: string, email: string): void {
-    console.log(
-      'reset link',
-      email,
-      `${process.env.BASE_URL_FE}${process.env.RESET_PASSWORD_PATH_FE}${resetId}`,
-    );
   }
 
   async signUpAdmin(
@@ -53,7 +39,7 @@ export class AuthService {
     resetRequiredDto: ResetRequiredDto,
   ): Promise<{ message: string }> {
     const message = await this.userService.resetRequired(resetRequiredDto);
-    this.sendResetEmail(message.resetId, resetRequiredDto.email);
+    this.emailService.sendResetEmail(message.resetId, resetRequiredDto.email);
     return message;
   }
 

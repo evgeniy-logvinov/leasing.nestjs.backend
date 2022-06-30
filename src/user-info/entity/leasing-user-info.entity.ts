@@ -1,7 +1,10 @@
+import { User } from 'src/user/entity/user.entity';
 import {
   BaseEntity,
   CreateDateColumn,
   Entity,
+  JoinColumn,
+  OneToOne,
   PrimaryGeneratedColumn,
   TableInheritance,
 } from 'typeorm';
@@ -17,4 +20,8 @@ export abstract class LeasingUserInfo extends BaseEntity {
 
   @CreateDateColumn({ type: 'timestamp' })
   updatedDate: Date;
+
+  @OneToOne((type) => User)
+  @JoinColumn()
+  user: User;
 }

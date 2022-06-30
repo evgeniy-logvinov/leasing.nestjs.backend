@@ -14,15 +14,15 @@ import {
 export class UpdateClientDto {
   @ApiProperty()
   @IsUUID()
-  // @MinLength(8)
-  // @MaxLength(9)
+  @IsUUID()
   id: string;
 
   @ApiProperty()
   @IsNumber()
-  // @MinLength(8)
-  // @MaxLength(9)
-  inn: number;
+  @IsNotEmpty()
+  @MinLength(9)
+  @MaxLength(11)
+  inn: string;
 
   @ApiProperty({ minimum: 4, maximum: 50 })
   @IsEmail()

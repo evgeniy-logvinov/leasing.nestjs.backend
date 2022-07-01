@@ -1,4 +1,8 @@
-import { Injectable, UnauthorizedException } from '@nestjs/common';
+import {
+  Injectable,
+  NotFoundException,
+  UnauthorizedException,
+} from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { JwtPayload } from 'src/auth/interface/jwt-payload.interface';
 import { RoleEnum } from 'src/utils/entities';
@@ -76,7 +80,16 @@ export class UserService {
     const user = await this.userRepository.findOne({ email });
 
     if (!user) {
-      throw new UnauthorizedException();
+      throw new NotFoundException(`This user ${email} is not found`);
+    }
+    return user;
+  }
+
+  async findOneById({ id }: { id: string }): Promise<User> {
+    const user = await this.userRepository.findOne({ id });
+
+    if (!user) {
+      throw new NotFoundException(`This user ${id} is not found`);
     }
     return user;
   }

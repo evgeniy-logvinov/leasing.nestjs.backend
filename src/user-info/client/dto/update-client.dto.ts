@@ -43,11 +43,6 @@ export class UpdateClientDto {
   blocked: boolean;
 
   @ApiProperty()
-  @IsBoolean()
-  @IsOptional()
-  invited: boolean;
-
-  @ApiProperty()
   @IsString()
   @IsOptional()
   @MaxLength(150)

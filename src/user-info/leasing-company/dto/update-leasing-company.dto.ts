@@ -14,12 +14,12 @@ import {
 export class UpdateLeasingCompanyDto {
   @ApiProperty()
   @IsUUID()
-  // @MinLength(8)
-  // @MaxLength(9)
+  @IsUUID()
   id: string;
 
   @ApiProperty()
   @IsNumber()
+  @IsNotEmpty()
   @MinLength(9)
   @MaxLength(11)
   inn: string;
@@ -43,18 +43,13 @@ export class UpdateLeasingCompanyDto {
   blocked: boolean;
 
   @ApiProperty()
-  @IsBoolean()
+  @IsString()
   @IsOptional()
-  invited: boolean;
+  @MaxLength(150)
+  description: string;
 
   @ApiProperty()
   @IsBoolean()
   @IsOptional()
   accreditation: boolean;
-
-  @ApiProperty()
-  @IsString()
-  @IsOptional()
-  @MaxLength(150)
-  description: string;
 }

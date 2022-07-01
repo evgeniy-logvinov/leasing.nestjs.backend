@@ -39,8 +39,8 @@ export class ClientController {
     return this.clientService.updateClient(clientDto);
   }
 
-  @Patch()
+  @Patch('/invite')
   inviteClientById(@Body() clientDto: UpdateClientDto): Promise<ClientPayload> {
-    return this.clientService.updateClient(clientDto);
+    return this.clientService.inviteClient(clientDto);
   }
 }

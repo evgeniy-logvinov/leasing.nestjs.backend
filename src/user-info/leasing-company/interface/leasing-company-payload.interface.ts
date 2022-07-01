@@ -4,6 +4,7 @@ export interface LeasingCompanyPayload {
   id: string;
   userName: string;
   inn: string;
+  email: string;
   state: UserState;
   createdDate: Date;
   updatedDate: Date;

@@ -29,7 +29,6 @@ export class LeasingCompanyController {
   }
 
   @Post()
-  // TODO: check what it means
   @UsePipes(ValidationPipe)
   createLeasingCompany(
     @Body() leasingCompanyDto: LeasingCompanyDto,
@@ -40,7 +39,14 @@ export class LeasingCompanyController {
   @Patch()
   updateLeasingCompanyById(
     @Body() leasingCompanyDto: UpdateLeasingCompanyDto,
-  ): Promise<LeasingCompany> {
+  ): Promise<LeasingCompanyPayload> {
     return this.leasingCompanyService.updateLeasingCompany(leasingCompanyDto);
+  }
+
+  @Patch('/invite')
+  inviteLeasingCompanyById(
+    @Body() leasingCompanyDto: UpdateLeasingCompanyDto,
+  ): Promise<LeasingCompanyPayload> {
+    return this.leasingCompanyService.inviteCompany(leasingCompanyDto);
   }
 }

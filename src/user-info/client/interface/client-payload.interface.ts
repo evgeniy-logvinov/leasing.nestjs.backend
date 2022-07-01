@@ -4,9 +4,7 @@ export interface ClientPayload {
   id: string;
   userName: string;
   inn: string;
-  user: {
-    email: string;
-  };
+  email: string;
   state: UserState;
   createdDate: Date;
   updatedDate: Date;

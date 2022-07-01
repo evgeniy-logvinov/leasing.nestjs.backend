@@ -20,39 +20,35 @@ export class ClientService {
   ) {}
 
   getAllClients(): Promise<ClientPayload[]> {
-    return this.clientRepository
-      .createQueryBuilder('client')
-      .leftJoinAndSelect('client.user', 'user')
-      .select(['email', 'client.*'])
-      .getRawMany();
+    return this.clientRepository.getAll();
   }
 
   async createClient(client: ClientDto): Promise<Client> {
     const result = await this.userService.createClient(client);
-    return await this.clientRepository.createClient(client, result.user);
+    return this.clientRepository.createClient(client, result.user);
   }
 
-  async updateClient(clientDto: UpdateClientDto): Promise<Client> {
+  async updateClient(clientDto: UpdateClientDto): Promise<ClientPayload> {
     const client = await this.getClientById(clientDto.id);
     client.description = clientDto.description;
     client.blocked = clientDto.blocked;
-    client.invited = clientDto.invited;
 
     await client.save();
 
-    return client;
+    return this.clientRepository.getById(client.id);
   }
 
-  async inviteClient(inviteClientDto: InviteClientDto): Promise<Client> {
+  async inviteClient(inviteClientDto: InviteClientDto): Promise<ClientPayload> {
     const client = await this.getClientById(inviteClientDto.id);
     client.invited = true;
 
     await client.save();
 
-    // const resetInfo = await this.userService.resetRequired(client);
-    // this.emailService.sendResetEmail(resetInfo.resetId, client.email);
+    const user = await this.userService.findOneById({ id: client.user.id });
+    const resetRequired = await this.userService.resetRequired(user);
+    this.emailService.sendInviteEmail(resetRequired.resetId, user.email);
 
-    return client;
+    return this.clientRepository.getById(client.id);
   }
 
   async getClientById(id: string): Promise<Client> {

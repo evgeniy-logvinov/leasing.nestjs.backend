@@ -20,7 +20,18 @@ export class ClientRepository extends Repository<Client> {
     return client;
   }
 
-  // async getAllClients(): Promise<ClientPayload> {
-  //   this.find
-  // }
+  getAll(): Promise<ClientPayload[]> {
+    return this.createQueryBuilder('client')
+      .leftJoinAndSelect('client.user', 'user')
+      .select(['email', 'client.*'])
+      .getRawMany();
+  }
+
+  getById(id: string): Promise<ClientPayload> {
+    return this.createQueryBuilder('client')
+      .leftJoinAndSelect('client.user', 'user')
+      .select(['email', 'client.*'])
+      .where('client.id = :id', { id })
+      .getRawOne();
+  }
 }

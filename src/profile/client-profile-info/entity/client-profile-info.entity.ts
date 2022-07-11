@@ -1,0 +1,17 @@
+import { GuarantorProfileInfo } from 'src/profile/guarantor-profile-info/entity/guarantor-profile-info.entity';
+import { ProfileInfo } from 'src/profile/profile-info/entity/profile-info.entity';
+import { GuarantorTypeEnum } from 'src/utils/entities/GuarantorTypeEnum';
+import { ChildEntity, Column, JoinColumn, OneToOne } from 'typeorm';
+
+@ChildEntity()
+export class ClientProfileInfo extends ProfileInfo {
+  @Column({
+    type: 'enum',
+    enum: GuarantorTypeEnum,
+  })
+  type: GuarantorTypeEnum;
+
+  @OneToOne((type) => ProfileInfo, { eager: true })
+  @JoinColumn()
+  guarantor: GuarantorProfileInfo;
+}

@@ -1,30 +1,38 @@
 import { BalanceHistoryThreeMonths } from 'src/balance/balance-history-three-months/entity/balance-history-three-months.entity';
 import { LeasingBaseEntity } from 'src/utils/entities';
-import { Column, Entity } from 'typeorm';
+import { Entity, JoinColumn, OneToOne } from 'typeorm';
 
 @Entity()
 export class FullBalanceNonCurrentAssets extends LeasingBaseEntity {
-  @Column()
+  @OneToOne(() => BalanceHistoryThreeMonths, { eager: true })
+  @JoinColumn()
   nonMaterialAssets: BalanceHistoryThreeMonths;
 
-  @Column()
+  @OneToOne(() => BalanceHistoryThreeMonths, { eager: true })
+  @JoinColumn()
   researchAndDevelopmentResults: BalanceHistoryThreeMonths;
 
-  @Column()
+  @OneToOne(() => BalanceHistoryThreeMonths, { eager: true })
+  @JoinColumn()
   nonMaterialSearchAssets: BalanceHistoryThreeMonths;
 
-  @Column()
+  @OneToOne(() => BalanceHistoryThreeMonths, { eager: true })
+  @JoinColumn()
   basicAssets: BalanceHistoryThreeMonths;
 
-  @Column()
+  @OneToOne(() => BalanceHistoryThreeMonths, { eager: true })
+  @JoinColumn()
   profitableInvestmentsInMaterialAssets: BalanceHistoryThreeMonths;
 
-  @Column()
+  @OneToOne(() => BalanceHistoryThreeMonths, { eager: true })
+  @JoinColumn()
   financialInvestments: BalanceHistoryThreeMonths;
 
-  @Column()
+  @OneToOne(() => BalanceHistoryThreeMonths, { eager: true })
+  @JoinColumn()
   defferedTaxAssets: BalanceHistoryThreeMonths;
 
-  @Column()
+  @OneToOne(() => BalanceHistoryThreeMonths, { eager: true })
+  @JoinColumn()
   otherNonCurrentAssets: BalanceHistoryThreeMonths;
 }

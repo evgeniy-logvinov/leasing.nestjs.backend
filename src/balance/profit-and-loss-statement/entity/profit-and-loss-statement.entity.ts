@@ -1,57 +1,74 @@
 import { BalanceHistoryTwoMonths } from 'src/balance/balance-history-two-months/entity/balance-history-two-months.entity';
 import { LeasingBaseEntity } from 'src/utils/entities';
-import { Column, Entity } from 'typeorm';
+import { Entity, JoinColumn, OneToOne } from 'typeorm';
 
 @Entity()
 export class ProfitAndLossStatement extends LeasingBaseEntity {
-  @Column()
+  @OneToOne(() => BalanceHistoryTwoMonths, { eager: true })
+  @JoinColumn()
   revenue: BalanceHistoryTwoMonths;
 
-  @Column()
+  @OneToOne(() => BalanceHistoryTwoMonths, { eager: true })
+  @JoinColumn()
   costOfSales: BalanceHistoryTwoMonths;
 
-  @Column()
+  @OneToOne(() => BalanceHistoryTwoMonths, { eager: true })
+  @JoinColumn()
   grossProfit: BalanceHistoryTwoMonths;
 
-  @Column()
+  @OneToOne(() => BalanceHistoryTwoMonths, { eager: true })
+  @JoinColumn()
   commercialExpenses: BalanceHistoryTwoMonths;
 
-  @Column()
+  @OneToOne(() => BalanceHistoryTwoMonths, { eager: true })
+  @JoinColumn()
   managementExpenses: BalanceHistoryTwoMonths;
 
-  @Column()
+  @OneToOne(() => BalanceHistoryTwoMonths, { eager: true })
+  @JoinColumn()
   profitFromSales: BalanceHistoryTwoMonths;
 
-  @Column()
+  @OneToOne(() => BalanceHistoryTwoMonths, { eager: true })
+  @JoinColumn()
   incomeFromParticipation: BalanceHistoryTwoMonths;
 
-  @Column()
+  @OneToOne(() => BalanceHistoryTwoMonths, { eager: true })
+  @JoinColumn()
   interestReceivable: BalanceHistoryTwoMonths;
 
-  @Column()
+  @OneToOne(() => BalanceHistoryTwoMonths, { eager: true })
+  @JoinColumn()
   interestPayable: BalanceHistoryTwoMonths;
 
-  @Column()
+  @OneToOne(() => BalanceHistoryTwoMonths, { eager: true })
+  @JoinColumn()
   otherIncome: BalanceHistoryTwoMonths;
 
-  @Column()
+  @OneToOne(() => BalanceHistoryTwoMonths, { eager: true })
+  @JoinColumn()
   otherExpenses: BalanceHistoryTwoMonths;
 
-  @Column()
+  @OneToOne(() => BalanceHistoryTwoMonths, { eager: true })
+  @JoinColumn()
   profitBeforeTax: BalanceHistoryTwoMonths;
 
-  @Column()
+  @OneToOne(() => BalanceHistoryTwoMonths, { eager: true })
+  @JoinColumn()
   currentIncomeTax: BalanceHistoryTwoMonths;
 
-  @Column()
+  @OneToOne(() => BalanceHistoryTwoMonths, { eager: true })
+  @JoinColumn()
   changeInDeferredTaxLiabilities: BalanceHistoryTwoMonths;
 
-  @Column()
+  @OneToOne(() => BalanceHistoryTwoMonths, { eager: true })
+  @JoinColumn()
   changeInDeferredTaxAssets: BalanceHistoryTwoMonths;
 
-  @Column()
+  @OneToOne(() => BalanceHistoryTwoMonths, { eager: true })
+  @JoinColumn()
   other: BalanceHistoryTwoMonths;
 
-  @Column()
+  @OneToOne(() => BalanceHistoryTwoMonths, { eager: true })
+  @JoinColumn()
   netProfit: BalanceHistoryTwoMonths;
 }

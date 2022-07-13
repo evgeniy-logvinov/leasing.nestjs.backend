@@ -1,21 +1,26 @@
 import { BalanceHistoryThreeMonths } from 'src/balance/balance-history-three-months/entity/balance-history-three-months.entity';
 import { LeasingBaseEntity } from 'src/utils/entities';
-import { Column, Entity } from 'typeorm';
+import { Entity, JoinColumn, OneToOne } from 'typeorm';
 
 @Entity()
 export class ReducedBalanceActive extends LeasingBaseEntity {
-  @Column()
+  @OneToOne(() => BalanceHistoryThreeMonths, { eager: true })
+  @JoinColumn()
   tangibleNonCurrentAssets: BalanceHistoryThreeMonths;
 
-  @Column()
+  @OneToOne(() => BalanceHistoryThreeMonths, { eager: true })
+  @JoinColumn()
   nonTangibleNonCurrentAssets: BalanceHistoryThreeMonths;
 
-  @Column()
+  @OneToOne(() => BalanceHistoryThreeMonths, { eager: true })
+  @JoinColumn()
   stocks: BalanceHistoryThreeMonths;
 
-  @Column()
+  @OneToOne(() => BalanceHistoryThreeMonths, { eager: true })
+  @JoinColumn()
   cashAndCashEquivalents: BalanceHistoryThreeMonths;
 
-  @Column()
+  @OneToOne(() => BalanceHistoryThreeMonths, { eager: true })
+  @JoinColumn()
   financialAndOtherCurrentAssets: BalanceHistoryThreeMonths;
 }

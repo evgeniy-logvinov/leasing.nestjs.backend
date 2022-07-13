@@ -1,6 +1,4 @@
 import { LeasingBaseEntity } from 'src/utils/entities';
-import { TypeDebtBurdenEnum } from 'src/utils/entities/TypeDebtBurdenEnum';
-import { TypeOfCommitmentEnum } from 'src/utils/entities/TypeOfCommitmentEnum';
 import { Column, Entity } from 'typeorm';
 
 @Entity()

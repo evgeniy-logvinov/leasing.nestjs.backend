@@ -1,13 +1,15 @@
 import { LeasingBaseEntity } from 'src/utils/entities';
-import { Column, Entity } from 'typeorm';
+import { Entity, JoinColumn, OneToOne } from 'typeorm';
 import { ReducedBalanceActive } from '../reduced-balance-active/reduced-balance-active.entity';
 import { ReducedBalancePassive } from '../reduced-balance-passive/reduced-balance-passive.entity';
 
 @Entity()
 export class ReducedBalance extends LeasingBaseEntity {
-  @Column()
+  @OneToOne(() => ReducedBalanceActive, { eager: true })
+  @JoinColumn()
   active: ReducedBalanceActive;
 
-  @Column()
+  @OneToOne(() => ReducedBalancePassive, { eager: true })
+  @JoinColumn()
   passive: ReducedBalancePassive;
 }

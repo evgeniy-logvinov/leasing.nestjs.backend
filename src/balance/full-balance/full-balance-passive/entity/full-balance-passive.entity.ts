@@ -1,17 +1,20 @@
 import { LeasingBaseEntity } from 'src/utils/entities';
-import { Column, Entity } from 'typeorm';
+import { Entity, JoinColumn, OneToOne } from 'typeorm';
 import { FullBalanceCapitalAndReserves } from '../../full-balance-capital-and-reserves/entity/full-balance-capital-and-reserves.entity';
 import { FullBalanceLongTermLiabilities } from '../../full-balance-long-term-liabilities/entity/full-balance-long-term-liabilities.entity';
 import { FullBalanceShortTermLiabilities } from '../../full-balance-short-term-liabilities/entity/full-balance-short-term-liabilities.entity';
 
 @Entity()
 export class FullBalancePassive extends LeasingBaseEntity {
-  @Column()
+  @OneToOne(() => FullBalanceCapitalAndReserves, { eager: true })
+  @JoinColumn()
   capitalAndReserves: FullBalanceCapitalAndReserves;
 
-  @Column()
+  @OneToOne(() => FullBalanceLongTermLiabilities, { eager: true })
+  @JoinColumn()
   longTermLiabilities: FullBalanceLongTermLiabilities;
 
-  @Column()
+  @OneToOne(() => FullBalanceShortTermLiabilities, { eager: true })
+  @JoinColumn()
   shortTermLiabilities: FullBalanceShortTermLiabilities;
 }

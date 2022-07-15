@@ -12,7 +12,7 @@ import {
 
 @Entity()
 export class LeasingCompanyEmployees extends LeasingBaseEntity {
-  @OneToOne((type) => LeasingCompany, { eager: true })
+  @OneToOne(() => LeasingCompany, { eager: true })
   @JoinColumn()
   leasingCompany: LeasingCompany;
 

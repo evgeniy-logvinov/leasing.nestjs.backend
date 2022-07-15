@@ -5,12 +5,24 @@ import { Fio } from 'src/fio/entity/fio.entity';
 import { Founder } from 'src/founder/entity/founder.entity';
 import { LeasingBaseEntity } from 'src/utils/entities';
 import { GuarantorTypeEnum } from 'src/utils/entities/GuarantorTypeEnum';
-import { Column, TableInheritance } from 'typeorm';
+import {
+  Column,
+  JoinColumn,
+  JoinTable,
+  ManyToMany,
+  ManyToOne,
+  OneToMany,
+  OneToOne,
+  TableInheritance,
+} from 'typeorm';
 
 @TableInheritance({ column: { type: 'varchar', name: 'type' } })
 export class ProfileInfo extends LeasingBaseEntity {
   @Column()
   site: string;
+
+  @Column()
+  inn: number;
 
   @Column()
   ogrn: number;
@@ -24,16 +36,19 @@ export class ProfileInfo extends LeasingBaseEntity {
   @Column()
   shortName: string;
 
-  @Column()
+  @OneToOne(() => Address, { eager: true })
+  @JoinColumn()
   actualAddress: Address;
 
   @Column()
   actualSameWithLegal: boolean;
 
-  @Column()
+  @OneToOne(() => Address, { eager: true })
+  @JoinColumn()
   legalAddress: Address;
 
-  @Column()
+  @OneToOne(() => Address, { eager: true })
+  @JoinColumn()
   postAddress: Address;
 
   @Column()
@@ -51,13 +66,30 @@ export class ProfileInfo extends LeasingBaseEntity {
   @Column()
   phone: string;
 
-  @Column()
+  @ManyToOne(
+    () => TaxationSystemDictionary,
+    (taxationSystem) => taxationSystem.id,
+    {
+      // eager: true,
+    },
+  )
+  @JoinColumn({ name: 'taxation_system_id' })
   taxationSystem: TaxationSystemDictionary;
 
-  @Column()
+  @ManyToOne(
+    () => OkvdDictionary,
+    (mainActivityByOkvd) => mainActivityByOkvd.id,
+    {
+      // eager: true,
+    },
+  )
+  @JoinColumn({ name: 'okvd_id' })
   mainActivityByOkvd: OkvdDictionary;
 
-  @Column()
+  @ManyToMany(() => OkvdDictionary, {
+    eager: true,
+  })
+  @JoinTable()
   actualActivityByOkvd: OkvdDictionary[];
 
   @Column()
@@ -69,15 +101,11 @@ export class ProfileInfo extends LeasingBaseEntity {
   @Column()
   businessStartSameWithRegistration: boolean;
 
-  @Column()
+  @OneToMany(() => Founder, (founder) => founder.profileInfo, {
+    eager: true,
+  })
   founders: Founder[];
 
   @Column()
   guaranteeOfGD: boolean;
-
-  @Column({
-    type: 'enum',
-    enum: GuarantorTypeEnum,
-  })
-  type: GuarantorTypeEnum;
 }

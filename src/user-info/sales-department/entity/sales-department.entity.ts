@@ -22,7 +22,7 @@ export class SalesDepartment extends LeasingBaseEntity {
   @Column({ type: 'varchar' })
   headOfDepartment: string;
 
-  @OneToOne((type) => LeasingCompanyEmployees, { eager: true })
+  @OneToOne(() => LeasingCompanyEmployees, { eager: true })
   @JoinColumn()
   leasingCompanyEmployees: LeasingCompanyEmployees;
 

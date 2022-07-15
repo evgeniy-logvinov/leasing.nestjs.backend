@@ -1,5 +1,6 @@
+import { ProfileInfo } from 'src/profile/profile-info/entity/profile-info.entity';
 import { FounderTypeEnum, LeasingBaseEntity } from 'src/utils/entities';
-import { Column, Entity } from 'typeorm';
+import { Column, Entity, ManyToMany, ManyToOne } from 'typeorm';
 
 @Entity()
 export class Founder extends LeasingBaseEntity {
@@ -18,4 +19,7 @@ export class Founder extends LeasingBaseEntity {
 
   @Column()
   businessShare: number;
+
+  @ManyToOne(() => ProfileInfo, (profile) => profile.founders)
+  profileInfo: ProfileInfo;
 }

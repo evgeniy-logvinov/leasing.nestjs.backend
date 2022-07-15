@@ -21,7 +21,7 @@ export abstract class LeasingUserInfo extends BaseEntity {
   @CreateDateColumn({ type: 'timestamp' })
   updatedDate: Date;
 
-  @OneToOne((type) => User, { eager: true })
+  @OneToOne(() => User, { eager: true })
   @JoinColumn()
   user: User;
 }

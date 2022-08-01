@@ -1,7 +1,8 @@
+import { Client } from 'src/user-info/client/entity/client.entity';
 import { LeasingBaseEntity } from 'src/utils/entities';
 import { TypeDebtBurdenEnum } from 'src/utils/entities/TypeDebtBurdenEnum';
 import { TypeOfCommitmentEnum } from 'src/utils/entities/TypeOfCommitmentEnum';
-import { Column, Entity } from 'typeorm';
+import { Column, Entity, JoinColumn, OneToOne } from 'typeorm';
 
 @Entity()
 export class DebtBurden extends LeasingBaseEntity {
@@ -37,4 +38,8 @@ export class DebtBurden extends LeasingBaseEntity {
 
   @Column()
   balanceAsOfCurrentDate: number;
+
+  @OneToOne(() => Client)
+  @JoinColumn()
+  client: Client;
 }

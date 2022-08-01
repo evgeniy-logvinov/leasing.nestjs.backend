@@ -1,5 +1,6 @@
+import { Client } from 'src/user-info/client/entity/client.entity';
 import { LeasingBaseEntity } from 'src/utils/entities';
-import { Column, Entity } from 'typeorm';
+import { Column, Entity, JoinColumn, OneToOne } from 'typeorm';
 
 @Entity()
 export class RegisterOfCurrentContracts extends LeasingBaseEntity {
@@ -17,4 +18,8 @@ export class RegisterOfCurrentContracts extends LeasingBaseEntity {
 
   @Column()
   amountOfPaidWork: number;
+
+  @OneToOne(() => Client)
+  @JoinColumn()
+  client: Client;
 }

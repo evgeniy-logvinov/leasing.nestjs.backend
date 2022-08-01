@@ -14,7 +14,7 @@ import {
   IsDateString,
   IsUrl,
 } from 'class-validator';
-import { AddressDto } from 'src/address/dto/address.dro';
+import { AddressDto } from 'src/address/dto/address.dto';
 import { FioDto } from 'src/fio/dto/fio.dto';
 import { FounderDto } from 'src/founder/dto/founder.dto';
 

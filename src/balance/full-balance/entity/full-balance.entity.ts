@@ -1,3 +1,4 @@
+import { Client } from 'src/user-info/client/entity/client.entity';
 import { LeasingBaseEntity } from 'src/utils/entities';
 import { Entity, JoinColumn, OneToOne } from 'typeorm';
 import { FullBalanceActive } from '../full-balance-active/entity/full-balance-active.entity';
@@ -12,4 +13,8 @@ export class FullBalance extends LeasingBaseEntity {
   @OneToOne(() => FullBalancePassive, { eager: true })
   @JoinColumn()
   passive: FullBalancePassive;
+
+  @OneToOne(() => Client)
+  @JoinColumn()
+  client: Client;
 }

@@ -2,7 +2,7 @@ import {
   InternalServerErrorException,
   NotFoundException,
 } from '@nestjs/common';
-import { AddressDto } from 'src/address/dto/address.dro';
+import { AddressDto } from 'src/address/dto/address.dto';
 import { Address } from 'src/address/entity/address.entity';
 import { CityDictionary } from 'src/dictionaries/city-dictionary/entity/city-dictionary.entity';
 import { OkvdDictionary } from 'src/dictionaries/okvd-dictionary/entity/okvd-dictionary.entity';

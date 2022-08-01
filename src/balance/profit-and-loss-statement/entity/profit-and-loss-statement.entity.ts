@@ -1,4 +1,5 @@
 import { BalanceHistoryTwoMonths } from 'src/balance/balance-history-two-months/entity/balance-history-two-months.entity';
+import { Client } from 'src/user-info/client/entity/client.entity';
 import { LeasingBaseEntity } from 'src/utils/entities';
 import { Entity, JoinColumn, OneToOne } from 'typeorm';
 
@@ -71,4 +72,8 @@ export class ProfitAndLossStatement extends LeasingBaseEntity {
   @OneToOne(() => BalanceHistoryTwoMonths, { eager: true })
   @JoinColumn()
   netProfit: BalanceHistoryTwoMonths;
+
+  @OneToOne(() => Client)
+  @JoinColumn()
+  client: Client;
 }

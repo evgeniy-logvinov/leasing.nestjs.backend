@@ -6,6 +6,7 @@ import {
   IsBoolean,
   IsDefined,
   IsEnum,
+  IsUUID,
 } from 'class-validator';
 import { GuarantorProfileInfoDto } from 'src/profile/guarantor-profile-info/dto/guarantor-profile-info.dto';
 import { ProfileInfoDto } from 'src/profile/profile-info/dto/profile-info.dto';
@@ -26,7 +27,7 @@ export class CreateProfileInfoDto extends ProfileInfoDto {
   guarantor: GuarantorProfileInfoDto;
 
   @ApiProperty()
-  @IsString()
+  @IsUUID()
   @IsNotEmpty()
   clientId: string;
 }

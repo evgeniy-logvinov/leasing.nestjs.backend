@@ -16,7 +16,7 @@ export class ClientProfileInfoService {
 
   async setProfile(
     clientProfileDto: CreateProfileInfoDto,
-  ): Promise<{ message: string }> {
+  ): Promise<{ message: string; id: string }> {
     const client = await this.clientRepository.findOne({
       where: { id: clientProfileDto.clientId },
     });
@@ -25,18 +25,31 @@ export class ClientProfileInfoService {
       throw new NotFoundException('Client not found.');
     }
 
-    let clientProfile = await this.clientProfileInfoRepository.findOne({
+    let clientInfoProfile = await this.clientProfileInfoRepository.findOne({
       where: { clientId: client.id },
     });
 
-    if (!clientProfile) {
-      clientProfile = ClientProfileInfo.create();
+    if (!clientInfoProfile) {
+      clientInfoProfile = ClientProfileInfo.create();
+      clientInfoProfile.client = client;
     }
-    await this.clientProfileInfoRepository.createProfileInfo(
+    const { id } = await this.clientProfileInfoRepository.createProfileInfo(
       clientProfileDto,
-      clientProfile,
+      clientInfoProfile,
     );
 
-    return { message: 'Client profile info created' };
+    return { message: 'Client profile info created', id };
+  }
+
+  async getProfile(clientId: string): Promise<ClientProfileInfo> {
+    const clientProfileInfo = await this.clientProfileInfoRepository.findOne({
+      where: clientId,
+    });
+
+    if (!clientProfileInfo) {
+      throw new NotFoundException('Client profile info not found.');
+    }
+
+    return clientProfileInfo;
   }
 }

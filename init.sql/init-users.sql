@@ -1,31 +1,89 @@
--- TRUNCATE TABLE users CASCADE;
--- TRUNCATE TABLE leasing_user_info CASCADE;
+INSERT INTO "debt_burden" (
+    "clientId",
+    "typeOfCommitment",
+    "typeDebtBurden",
+    "issueDate",
+    "summ",
+    "maturityDate",
+    "remainingMaturityDate",
+    "averageMonthlyPayment",
+    "balanceAtLastReportingDate",
+    "balanceAsOfCurrentDate",
+    )
+SELECT
+    "client".id,
+    "CREDIT",
+    "LEASING",
+    "24.08.2022", 
+    "4000", 
+    "24.08.2022", 
+    "5000", 
+    "5001", 
+    "5002", 
+FROM    "client"
+-- TODO
+WHERE   "client"."id" = '11111111';
 
--- INSERT INTO leasing_base_user ("role_id", "type")
--- SELECT  "role".id, 'LeasingAdmin'
--- FROM    "role"
--- WHERE   "role"."name" = 'ROLE_ADMIN';
+INSERT INTO "register_of_current_contracts" (
+    "clientId",
+    "startDate",
+    "endDate",
+    "summOfAgreement",
+    "scopeOfWorkPerformed",
+    "amountOfPaidWork",
+    )
+SELECT
+    "client".id,
+    "24.08.2022", 
+    "24.08.2022", 
+    "4000", 
+    "5000", 
+    "5001", 
+FROM    "client"
+-- TODO
+WHERE   "client"."id" = '11111111';
 
--- INSERT INTO "user" ( "leasingBaseUserId", "email" )
--- SELECT  "leasing_base_user".id, 'defaultAdmin@mail.com'  
--- FROM    "leasing_base_user"
 
--- INSERT INTO leasing_base_user ("role_id", "type")
--- SELECT  "role".id, 'LeasingCompany'
--- FROM    "role"
--- WHERE   "role"."name" = 'ROLE_LEASING_COMPANY';
 
--- INSERT INTO "user" ( "leasingBaseUserId", "email" )
--- SELECT  "leasing_base_user".id, 'company@mail.com'
--- FROM    "leasing_base_user"
--- WHERE   "leasing_base_user"."type" = 'LeasingCompany';
+INSERT INTO "balance_history_two_months" (
+    "currentYear",
+    "previousYear",
+    "id"
+)
+VALUES (
+    "2022",
+    "2021",
+    "testid"
+)
 
--- INSERT INTO leasing_base_user ("role_id", "type")
--- SELECT  "role".id, 'Client'
--- FROM    "role"
--- WHERE   "role"."name" = 'ROLE_LEASING_CLIENT';
 
--- INSERT INTO "user" ( "leasingBaseUserId", "email" )
--- SELECT  "leasing_base_user".id, 'client@mail.com'
--- FROM    "leasing_base_user"
--- WHERE   "leasing_base_user"."type" = 'Client';
+INSERT INTO "profit_and_loss_statement" (
+    "clientId",
+    "revenue",
+    "costOfSales",
+    "grossProfit",
+    "commercialExpenses",
+    "managementExpenses",
+    "profitFromSales",
+    "incomeFromParticipation",
+    "interestReceivable",
+    "interestPayable",
+    "otherIncome",
+    "otherExpenses",
+    "profitBeforeTax",
+    "currentIncomeTax",
+    "changeInDeferredTaxLiabilities",
+    "changeInDeferredTaxAssets",
+    "other",
+    "netProfit",
+    )
+SELECT
+    "client".id,
+    "24.08.2022", 
+    "24.08.2022", 
+    "4000", 
+    "5000", 
+    "5001", 
+FROM    "client"
+-- TODO
+WHERE   "client"."id" = '11111111';

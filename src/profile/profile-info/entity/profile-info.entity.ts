@@ -6,18 +6,27 @@ import { Founder } from 'src/founder/entity/founder.entity';
 import { LeasingBaseEntity } from 'src/utils/entities';
 import { GuarantorTypeEnum } from 'src/utils/entities/GuarantorTypeEnum';
 import {
+  BaseEntity,
   Column,
+  Entity,
+  Generated,
   JoinColumn,
   JoinTable,
   ManyToMany,
   ManyToOne,
   OneToMany,
   OneToOne,
+  PrimaryGeneratedColumn,
   TableInheritance,
 } from 'typeorm';
 
+@Entity()
 @TableInheritance({ column: { type: 'varchar', name: 'type' } })
-export class ProfileInfo extends LeasingBaseEntity {
+export class ProfileInfo extends BaseEntity {
+  @PrimaryGeneratedColumn('uuid')
+  @Generated('uuid')
+  id: string;
+
   @Column()
   site: string;
 
@@ -60,7 +69,8 @@ export class ProfileInfo extends LeasingBaseEntity {
   @Column({ type: 'varchar' })
   email: string;
 
-  @Column()
+  @ManyToOne(() => Fio)
+  @JoinColumn()
   generalManager: Fio;
 
   @Column()

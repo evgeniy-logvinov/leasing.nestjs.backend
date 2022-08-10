@@ -1,17 +1,19 @@
 import { CityDictionary } from 'src/dictionaries/city-dictionary/entity/city-dictionary.entity';
 import { RegionDictionary } from 'src/dictionaries/region-dictionary/entity/region-dictionary.entity';
 import { LeasingBaseEntity } from 'src/utils/entities';
-import { Column, Entity } from 'typeorm';
+import { Column, Entity, JoinColumn, ManyToOne } from 'typeorm';
 
 @Entity()
 export class Address extends LeasingBaseEntity {
   @Column()
   index: number;
 
-  @Column()
+  @ManyToOne(() => RegionDictionary)
+  @JoinColumn()
   region: RegionDictionary;
 
-  @Column()
+  @ManyToOne(() => CityDictionary)
+  @JoinColumn()
   city: CityDictionary;
 
   @Column()

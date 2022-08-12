@@ -1,5 +1,6 @@
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
+import { ApplicationModule } from './application/application.module';
 import { AuthModule } from './auth/auth.module';
 import { BalanceModule } from './balance/balance.module';
 import * as typeOrmConfig from './typeorm.config';
@@ -13,6 +14,7 @@ import { UserModule } from './user/user.module';
     LeasingUserInfoModule,
     UserModule,
     BalanceModule,
+    ApplicationModule,
   ],
 })
 export class AppModule {}

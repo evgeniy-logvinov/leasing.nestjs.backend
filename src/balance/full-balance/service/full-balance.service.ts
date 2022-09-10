@@ -1,7 +1,5 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { ClientNotFoundException } from 'src/handlers/errors/ClientNotFoundException';
-import { ClientRepository } from 'src/user-info/client/repository/client.repository';
 import { CreateFullBalanceDto } from '../dto/create-full-balance.dto';
 import { FullBalance } from '../entity/full-balance.entity';
 import { FullBalanceRepository } from '../repository/full-balance.repository';

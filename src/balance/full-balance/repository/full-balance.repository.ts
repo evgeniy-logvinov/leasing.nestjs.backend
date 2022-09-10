@@ -1,10 +1,7 @@
-import {
-  InternalServerErrorException,
-  NotFoundException,
-} from '@nestjs/common';
+import { InternalServerErrorException } from '@nestjs/common';
 import { BalanceHistoryThreeMonthDto } from 'src/balance/balance-history-three-months/dto/balance-history-three-months.dto';
 import { BalanceHistoryThreeMonths } from 'src/balance/balance-history-three-months/entity/balance-history-three-months.entity';
-import { Client } from 'src/user-info/client/entity/client.entity';
+import { ClientNotFoundException } from 'src/handlers/errors/ClientNotFoundException';
 import { EntityRepository, Repository } from 'typeorm';
 import { CreateFullBalanceDto } from '../dto/create-full-balance.dto';
 import { FullBalance } from '../entity/full-balance.entity';
@@ -27,15 +24,18 @@ import { FullBalanceShortTermLiabilities } from '../full-balance-short-term-liab
 export class FullBalanceRepository extends Repository<FullBalance> {
   async createFullBalance(
     fullBalanceDto: CreateFullBalanceDto,
-    fullBalance: FullBalance,
   ): Promise<{ message: string; id: string }> {
     const { active, clientId, passive } = fullBalanceDto;
-    const client = await Client.findOne({ where: { id: clientId } });
-    if (!client) {
-      throw new NotFoundException('Client not found.');
+    if (!clientId) {
+      throw new ClientNotFoundException();
     }
 
     try {
+      // TODO: check
+      const fullBalance = await this.findOne({
+        where: { client: { id: clientId } },
+      });
+
       fullBalance.active = await this.createActive(active);
       fullBalance.passive = await this.createPassive(passive);
 
@@ -53,13 +53,9 @@ export class FullBalanceRepository extends Repository<FullBalance> {
     currentAssets,
     nonCurrentAssets,
   }: FullBalanceActiveDto): Promise<FullBalanceActive> {
-    let newActive = await FullBalanceActive.findOne({
+    const newActive = await FullBalanceActive.findOne({
       where: { id },
     });
-
-    if (!newActive) {
-      newActive = FullBalanceActive.create();
-    }
 
     newActive.currentAssets = await this.createCurrentAssets(currentAssets);
     newActive.nonCurrentAssets = await this.createNonCurrentAssets(
@@ -75,13 +71,9 @@ export class FullBalanceRepository extends Repository<FullBalance> {
     longTermLiabilities,
     shortTermLiabilities,
   }: FullBalancePassiveDto): Promise<FullBalancePassive> {
-    let newPassive = await FullBalancePassive.findOne({
+    const newPassive = await FullBalancePassive.findOne({
       where: { id },
     });
-
-    if (!newPassive) {
-      newPassive = FullBalancePassive.create();
-    }
 
     newPassive.capitalAndReserves = await this.createCapitalAndReserves(
       capitalAndReserves,
@@ -107,13 +99,9 @@ export class FullBalanceRepository extends Repository<FullBalance> {
     reserveCapital,
     retainedEarnings,
   }: FullBalanceCapitalAndReservesDto): Promise<FullBalanceCapitalAndReserves> {
-    let newCapitalAndReserves = await FullBalanceCapitalAndReserves.findOne({
+    const newCapitalAndReserves = await FullBalanceCapitalAndReserves.findOne({
       where: { id },
     });
-
-    if (!newCapitalAndReserves) {
-      newCapitalAndReserves = FullBalanceCapitalAndReserves.create();
-    }
 
     newCapitalAndReserves.authorizedCapital =
       await this.createThreeMonthHistory(authorizedCapital);
@@ -146,15 +134,10 @@ export class FullBalanceRepository extends Repository<FullBalance> {
     estimatedLiabilities,
     otherLiabilities,
   }: FullBalanceLongTermLiabilitiesDto): Promise<FullBalanceLongTermLiabilities> {
-    let newFullBalanceLongTermLiabilities =
+    const newFullBalanceLongTermLiabilities =
       await FullBalanceLongTermLiabilities.findOne({
         where: { id },
       });
-
-    if (!newFullBalanceLongTermLiabilities) {
-      newFullBalanceLongTermLiabilities =
-        FullBalanceLongTermLiabilities.create();
-    }
 
     newFullBalanceLongTermLiabilities.borrowedFunds =
       await this.createThreeMonthHistory(borrowedFunds);
@@ -179,15 +162,10 @@ export class FullBalanceRepository extends Repository<FullBalance> {
     estimatedLiabilities,
     otherLiabilities,
   }: FullBalanceShortTermLiabilitiesDto): Promise<FullBalanceShortTermLiabilities> {
-    let newFullBalanceShortTermLiabilities =
+    const newFullBalanceShortTermLiabilities =
       await FullBalanceShortTermLiabilities.findOne({
         where: { id },
       });
-
-    if (!newFullBalanceShortTermLiabilities) {
-      newFullBalanceShortTermLiabilities =
-        FullBalanceShortTermLiabilities.create();
-    }
 
     newFullBalanceShortTermLiabilities.borrowedFunds =
       await this.createThreeMonthHistory(borrowedFunds);
@@ -216,13 +194,9 @@ export class FullBalanceRepository extends Repository<FullBalance> {
     cashAndCashEquivalents,
     otherCurrentAssets,
   }: FullBalanceCurrentAssetsDto): Promise<FullBalanceCurrentAssets> {
-    let newAssets = await FullBalanceCurrentAssets.findOne({
+    const newAssets = await FullBalanceCurrentAssets.findOne({
       where: { id },
     });
-
-    if (!newAssets) {
-      newAssets = FullBalanceCurrentAssets.create();
-    }
 
     newAssets.reserves = await this.createThreeMonthHistory(reserves);
     newAssets.ndcAcquiredValuables = await this.createThreeMonthHistory(
@@ -256,13 +230,9 @@ export class FullBalanceRepository extends Repository<FullBalance> {
     defferedTaxAssets,
     otherNonCurrentAssets,
   }: FullBalanceNonCurrentAssetsDto): Promise<FullBalanceNonCurrentAssets> {
-    let newNonCurrentAssets = await FullBalanceNonCurrentAssets.findOne({
+    const newNonCurrentAssets = await FullBalanceNonCurrentAssets.findOne({
       where: { id },
     });
-
-    if (!newNonCurrentAssets) {
-      newNonCurrentAssets = FullBalanceNonCurrentAssets.create();
-    }
 
     newNonCurrentAssets.nonMaterialAssets = await this.createThreeMonthHistory(
       nonMaterialAssets,
@@ -300,13 +270,9 @@ export class FullBalanceRepository extends Repository<FullBalance> {
     previousYear,
     previuosPreviousYear,
   }: BalanceHistoryThreeMonthDto): Promise<BalanceHistoryThreeMonths> {
-    let newThreeMonthHistory = await BalanceHistoryThreeMonths.findOne({
+    const newThreeMonthHistory = await BalanceHistoryThreeMonths.findOne({
       where: { id },
     });
-
-    if (!newThreeMonthHistory) {
-      newThreeMonthHistory = BalanceHistoryThreeMonths.create();
-    }
 
     newThreeMonthHistory.currentYear = currentYear;
     newThreeMonthHistory.previousYear = previousYear;

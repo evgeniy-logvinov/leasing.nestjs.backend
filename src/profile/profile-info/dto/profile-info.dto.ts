@@ -13,6 +13,9 @@ import {
   IsDate,
   IsDateString,
   IsUrl,
+  IsUUID,
+  IsOptional,
+  IsNumberString,
 } from 'class-validator';
 import { AddressDto } from 'src/address/dto/address.dto';
 import { FioDto } from 'src/fio/dto/fio.dto';
@@ -20,17 +23,28 @@ import { FounderDto } from 'src/founder/dto/founder.dto';
 
 export class ProfileInfoDto {
   @ApiProperty()
+  @IsOptional()
+  @IsUUID()
+  id: string;
+
+  @ApiProperty()
   @IsUrl()
   @IsNotEmpty()
   @IsString()
   site: string;
 
-  @ApiProperty()
-  @IsNumber()
+  // @ApiProperty()
+  // @IsNumber()
+  // @IsNotEmpty()
+  // @MinLength(9)
+  // @MaxLength(11)
+  // inn: number;
+  @ApiProperty({ minimum: 9, maximum: 11 })
   @IsNotEmpty()
-  @MinLength(9)
-  @MaxLength(11)
-  inn: number;
+  @MinLength(10)
+  @MaxLength(10)
+  @IsNumberString()
+  inn: string;
 
   @ApiProperty()
   @IsNumber()
@@ -101,7 +115,6 @@ export class ProfileInfoDto {
   @ApiProperty()
   @IsString()
   @IsNotEmpty()
-  @ValidateNested()
   phone: string;
 
   @ApiProperty()
@@ -134,6 +147,7 @@ export class ProfileInfoDto {
 
   @ApiProperty()
   @IsBoolean()
+  @IsNotEmpty()
   businessStartSameWithRegistration: boolean;
 
   @ApiProperty()

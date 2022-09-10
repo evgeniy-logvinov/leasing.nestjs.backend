@@ -44,6 +44,7 @@ export class User extends BaseEntity {
   @ManyToOne((type) => Role, (role) => role.id, {
     eager: true,
   })
+  // TODO: Change to roleId
   @JoinColumn({ name: 'role_id' })
   role: Role;
 

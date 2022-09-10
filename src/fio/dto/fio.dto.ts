@@ -1,7 +1,12 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { IsString, IsNotEmpty } from 'class-validator';
+import { IsString, IsNotEmpty, IsOptional, IsUUID } from 'class-validator';
 
 export class FioDto {
+  @ApiProperty()
+  @IsOptional()
+  @IsUUID()
+  id: string;
+
   @ApiProperty()
   @IsString()
   @IsNotEmpty()
@@ -10,7 +15,7 @@ export class FioDto {
   @ApiProperty()
   @IsString()
   @IsNotEmpty()
-  lastName: string;
+  secondName: string;
 
   @ApiProperty()
   @IsString()

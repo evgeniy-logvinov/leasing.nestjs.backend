@@ -2,6 +2,7 @@ import {
   Body,
   Controller,
   Get,
+  Param,
   Post,
   UseGuards,
   UsePipes,
@@ -20,9 +21,14 @@ import { ApplicationService } from './service/application.service';
 export class ApplicationController {
   constructor(private applicationService: ApplicationService) {}
 
-  @Get()
-  get(@Body() clientId: string): Promise<Application> {
-    return this.applicationService.getApplication(clientId);
+  @Get(':clientId/all')
+  getAll(@Param('clientId') clientId: string): Promise<Application[]> {
+    return this.applicationService.getAllApplicationsByClientId(clientId);
+  }
+
+  @Get(':applicationId')
+  get(@Param('applicationId') applicationId: string): Promise<Application> {
+    return this.applicationService.getApplicationById(applicationId);
   }
 
   @Post()
@@ -30,6 +36,6 @@ export class ApplicationController {
   create(
     @Body() applicationDto: CreateApplicationDto,
   ): Promise<{ message: string; id: string }> {
-    return this.applicationService.setApplication(applicationDto);
+    return this.applicationService.create(applicationDto);
   }
 }

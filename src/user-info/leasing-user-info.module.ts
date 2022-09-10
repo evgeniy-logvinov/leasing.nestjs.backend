@@ -20,6 +20,9 @@ import { LeasingCompanyEmployeesService } from './leasing-company-employees/serv
 import { LeasingCompanyEmployeesRepository } from './leasing-company-employees/repository/leasing-company-employees.repository';
 import { LeasingUserInfoRepository } from './repository/leasing-user-info.repository';
 import { LeasingUserInfoService } from './service/leasing-user-info.service';
+import { HeadOfSalesService } from './head-of-sales/service/head-of-sales.service';
+import { HeadOfSalesController } from './head-of-sales/head-of-sales.controller';
+import { HeadOfSalesRepository } from './head-of-sales/repository/head-of-sales.repository';
 
 // TODO: check modules
 @Module({
@@ -36,12 +39,14 @@ import { LeasingUserInfoService } from './service/leasing-user-info.service';
       AnaliticsDepartmentRepository,
       SalesDepartmentRepository,
       LeasingCompanyEmployeesRepository,
+      HeadOfSalesRepository,
     ]),
   ],
   controllers: [
     ClientController,
     LeasingCompanyController,
     LeasingCompanyEmployeesController,
+    HeadOfSalesController,
   ],
   providers: [
     LeasingUserInfoService,
@@ -52,6 +57,7 @@ import { LeasingUserInfoService } from './service/leasing-user-info.service';
     AnaliticsDepartmentService,
     SalesDepartmentService,
     LeasingCompanyEmployeesService,
+    HeadOfSalesService,
   ],
 })
 export class LeasingUserInfoModule {}

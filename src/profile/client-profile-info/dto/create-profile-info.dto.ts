@@ -15,15 +15,18 @@ import { GuarantorTypeEnum } from 'src/utils/entities/GuarantorTypeEnum';
 export class CreateProfileInfoDto extends ProfileInfoDto {
   @ApiProperty()
   @IsBoolean()
+  @IsNotEmpty()
   guaranteeOfGD: boolean;
 
   @ApiProperty({ enum: GuarantorTypeEnum, enumName: 'GuarantorTypeEnum' })
   @IsEnum(GuarantorTypeEnum)
   @IsDefined()
+  @IsNotEmpty()
   type: GuarantorTypeEnum;
 
   @ApiProperty()
   @ValidateNested()
+  @IsNotEmpty()
   guarantor: GuarantorProfileInfoDto;
 
   @ApiProperty()

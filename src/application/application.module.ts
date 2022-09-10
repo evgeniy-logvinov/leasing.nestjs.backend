@@ -8,6 +8,7 @@ import { ApplicationService } from './service/application.service';
 @Module({
   imports: [TypeOrmModule.forFeature([ApplicationRepository])],
   controllers: [ApplicationController],
+  // TODO: Try to remove client repository. Looks like we don't need it here
   providers: [ApplicationService, ClientRepository],
 })
 export class ApplicationModule {}

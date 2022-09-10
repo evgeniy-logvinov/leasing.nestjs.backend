@@ -13,6 +13,11 @@ SELECT * FROM permission;
 INSERT INTO role ("name") VALUES ('ROLE_ADMIN');
 INSERT INTO role ("name") VALUES ('ROLE_LEASING_CLIENT');
 INSERT INTO role ("name") VALUES ('ROLE_LEASING_COMPANY');
+INSERT INTO role ("name") VALUES ('ROLE_LEASING_COMPANY_HEAD_OF_SALES');
+INSERT INTO role ("name") VALUES ('ROLE_LEASING_COMPANY_HEAD_OF_ANALITICS');
+INSERT INTO role ("name") VALUES ('ROLE_LEASING_COMPANY_ANALITIC');
+INSERT INTO role ("name") VALUES ('ROLE_LEASING_COMPANY_REGION_MANAGER');
+INSERT INTO role ("name") VALUES ('ROLE_LEASING_COMPANY_SALES');
 SELECT * FROM role;
 
 INSERT INTO "role_permissions_permission" ("roleId", "permissionId")
@@ -32,6 +37,36 @@ SELECT "role"."id", "permission"."id"
 FROM "role", "permission"
 WHERE "role"."name" = 'ROLE_LEASING_COMPANY'
 AND "permission"."name" in ('PREFERENCE_FILTER', 'EMPLOYEES', 'COMPANY_PROFILE', 'ORDERS', 'STATISTICS');
+
+INSERT INTO "role_permissions_permission" ("roleId", "permissionId")
+SELECT "role"."id", "permission"."id"
+FROM "role", "permission"
+WHERE "role"."name" = 'ROLE_LEASING_COMPANY_HEAD_OF_SALES'
+AND "permission"."name" in ('STATISTICS');
+
+INSERT INTO "role_permissions_permission" ("roleId", "permissionId")
+SELECT "role"."id", "permission"."id"
+FROM "role", "permission"
+WHERE "role"."name" = 'ROLE_LEASING_COMPANY_HEAD_OF_ANALITICS'
+AND "permission"."name" in ('STATISTICS');
+
+INSERT INTO "role_permissions_permission" ("roleId", "permissionId")
+SELECT "role"."id", "permission"."id"
+FROM "role", "permission"
+WHERE "role"."name" = 'ROLE_LEASING_COMPANY_ANALITIC'
+AND "permission"."name" in ('STATISTICS');
+
+INSERT INTO "role_permissions_permission" ("roleId", "permissionId")
+SELECT "role"."id", "permission"."id"
+FROM "role", "permission"
+WHERE "role"."name" = 'ROLE_LEASING_COMPANY_REGION_MANAGER'
+AND "permission"."name" in ('STATISTICS');
+
+INSERT INTO "role_permissions_permission" ("roleId", "permissionId")
+SELECT "role"."id", "permission"."id"
+FROM "role", "permission"
+WHERE "role"."name" = 'ROLE_LEASING_COMPANY_SALES'
+AND "permission"."name" in ('STATISTICS');
 
 SELECT "role"."name", "permission"."name"
 FROM "role", "permission", "role_permissions_permission"

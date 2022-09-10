@@ -14,17 +14,21 @@ import { FounderDto } from 'src/founder/dto/founder.dto';
 import { Founder } from 'src/founder/entity/founder.entity';
 import { GuarantorProfileInfoDto } from 'src/profile/guarantor-profile-info/dto/guarantor-profile-info.dto';
 import { GuarantorProfileInfo } from 'src/profile/guarantor-profile-info/entity/guarantor-profile-info.entity';
+import { Client } from 'src/user-info/client/entity/client.entity';
 import { EntityRepository, Repository } from 'typeorm';
 import { CreateProfileInfoDto } from '../dto/create-profile-info.dto';
 import { ClientProfileInfo } from '../entity/client-profile-info.entity';
 
+// TODO: check id if not exists create new one
+// In this case it will create again and again new objects instead of rewrite one to one relation
+// Return await save result
 @EntityRepository(ClientProfileInfo)
 export class ClientProfileInfoRepository extends Repository<ClientProfileInfo> {
   async createProfileInfo(
     profileInfo: CreateProfileInfoDto,
-    clientProfile: ClientProfileInfo,
   ): Promise<{ message: string; id: string }> {
     const {
+      id,
       inn,
       type,
       site,
@@ -50,9 +54,21 @@ export class ClientProfileInfoRepository extends Repository<ClientProfileInfo> {
       founders,
       guaranteeOfGD,
       guarantor,
+      clientId,
     } = profileInfo;
 
     try {
+      const client = await Client.findOneOrFail({
+        where: { id: clientId },
+      });
+
+      // if (!client) {
+      //   throw new NotFoundException('Client not found.');
+      // }
+
+      const clientProfile = await ClientProfileInfo.findOne({
+        where: { id },
+      });
       clientProfile.type = type;
       clientProfile.inn = inn;
       clientProfile.site = site;
@@ -69,6 +85,7 @@ export class ClientProfileInfoRepository extends Repository<ClientProfileInfo> {
       clientProfile.email = email;
       clientProfile.generalManager = await this.createFio(generalManager);
       clientProfile.phone = phone;
+      clientProfile.client = client;
 
       const taxationSystem = await TaxationSystemDictionary.findOne({
         where: { id: taxationSystemId },
@@ -119,55 +136,80 @@ export class ClientProfileInfoRepository extends Repository<ClientProfileInfo> {
     }
   }
 
-  async createAddress(address: AddressDto): Promise<Address> {
-    const actualAddressCity = await CityDictionary.findOne({
-      where: { id: address.cityId },
+  async createAddress({
+    id,
+    cityId,
+    regionId,
+    index,
+    building,
+    corpus,
+    district,
+    house,
+    litera,
+    number,
+    street,
+  }: AddressDto): Promise<Address> {
+    const actualAddressCity = await CityDictionary.findOneOrFail({
+      where: { id: cityId },
     });
 
-    if (!actualAddressCity) {
-      throw new NotFoundException('City not found.');
-    }
+    // if (!actualAddressCity) {
+    //   throw new NotFoundException('City not found.');
+    // }
 
-    const actualAddressRegion = await RegionDictionary.findOne({
-      where: { id: address.regionId },
+    const actualAddressRegion = await RegionDictionary.findOneOrFail({
+      where: { id: regionId },
     });
 
-    if (!actualAddressRegion) {
-      throw new NotFoundException('Region not found.');
-    }
+    // if (!actualAddressRegion) {
+    //   throw new NotFoundException('Region not found.');
+    // }
 
-    const newActualAddress = Address.create();
-    newActualAddress.index = address.index;
+    const newActualAddress = await Address.findOne({
+      where: { id },
+    });
+    newActualAddress.index = index;
     newActualAddress.region = actualAddressRegion;
     newActualAddress.city = actualAddressCity;
-    newActualAddress.district = address.district;
-    newActualAddress.street = address.street;
-    newActualAddress.house = address.house;
-    newActualAddress.corpus = address.corpus;
-    newActualAddress.building = address.building;
-    newActualAddress.litera = address.litera;
-    newActualAddress.number = address.number;
+    newActualAddress.district = district;
+    newActualAddress.street = street;
+    newActualAddress.house = house;
+    newActualAddress.corpus = corpus;
+    newActualAddress.building = building;
+    newActualAddress.litera = litera;
+    newActualAddress.number = number;
     await newActualAddress.save();
 
     return newActualAddress;
   }
 
-  async createFio({ firstName, lastName, patronymic }: FioDto): Promise<Fio> {
-    const newFio = Fio.create();
+  async createFio({
+    firstName,
+    secondName,
+    patronymic,
+    id,
+  }: FioDto): Promise<Fio> {
+    const newFio = await Fio.findOne({ where: { id } });
     newFio.firstName = firstName;
-    newFio.lastName = lastName;
+    newFio.secondName = secondName;
     newFio.patronymic = patronymic;
     await newFio.save();
 
     return newFio;
   }
 
-  async createFounder(founder: FounderDto): Promise<Founder> {
-    const newFounder = Founder.create();
-    newFounder.type = founder.type;
-    newFounder.inn = founder.inn;
-    newFounder.name = founder.name;
-    newFounder.businessShare = founder.businessShare;
+  async createFounder({
+    id,
+    businessShare,
+    inn,
+    name,
+    type,
+  }: FounderDto): Promise<Founder> {
+    const newFounder = await Founder.findOne({ where: { id } });
+    newFounder.type = type;
+    newFounder.inn = inn;
+    newFounder.name = name;
+    newFounder.businessShare = businessShare;
 
     await newFounder.save();
 
@@ -178,6 +220,7 @@ export class ClientProfileInfoRepository extends Repository<ClientProfileInfo> {
     guarantor: GuarantorProfileInfoDto,
   ): Promise<GuarantorProfileInfo> {
     const {
+      id,
       inn,
       site,
       ogrn,
@@ -203,7 +246,9 @@ export class ClientProfileInfoRepository extends Repository<ClientProfileInfo> {
     } = guarantor;
 
     try {
-      const clientProfile = new GuarantorProfileInfo();
+      const clientProfile = await GuarantorProfileInfo.findOne({
+        where: { id },
+      });
       clientProfile.inn = inn;
       clientProfile.site = site;
       clientProfile.ogrn = ogrn;
@@ -220,23 +265,23 @@ export class ClientProfileInfoRepository extends Repository<ClientProfileInfo> {
       clientProfile.generalManager = await this.createFio(generalManager);
       clientProfile.phone = phone;
 
-      const taxationSystem = await TaxationSystemDictionary.findOne({
+      const taxationSystem = await TaxationSystemDictionary.findOneOrFail({
         where: { id: taxationSystemId },
       });
 
-      if (!taxationSystem) {
-        throw new NotFoundException('Taxation system not found.');
-      }
+      // if (!taxationSystem) {
+      //   throw new NotFoundException('Taxation system not found.');
+      // }
 
       clientProfile.taxationSystem = taxationSystem;
 
-      const mainActivityByOkvd = await OkvdDictionary.findOne({
+      const mainActivityByOkvd = await OkvdDictionary.findOneOrFail({
         where: { id: mainActivityByOkvdId },
       });
 
-      if (!mainActivityByOkvd) {
-        throw new NotFoundException('Main activity not found.');
-      }
+      // if (!mainActivityByOkvd) {
+      //   throw new NotFoundException('Main activity not found.');
+      // }
 
       const actualActivityByOkvd = await OkvdDictionary.findByIds(
         actualActivityByOkvdIds,
@@ -246,6 +291,7 @@ export class ClientProfileInfoRepository extends Repository<ClientProfileInfo> {
         throw new NotFoundException('Actual activity by okvd not found.');
       }
 
+      clientProfile.mainActivityByOkvd = mainActivityByOkvd;
       clientProfile.actualActivityByOkvd = actualActivityByOkvd;
       clientProfile.registrationDate = new Date(registrationDate);
       clientProfile.businessStartDate = new Date(businessStartDate);

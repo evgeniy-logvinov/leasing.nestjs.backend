@@ -23,6 +23,6 @@ export class ClientProfileInfoController {
     @Body(ValidationPipe) createDto: CreateProfileInfoDto,
   ): Promise<{ message: string }> {
     console.log('createProfileDto', createDto);
-    return this.clientProfileInfoService.setProfile(createDto);
+    return this.clientProfileInfoService.create(createDto);
   }
 }

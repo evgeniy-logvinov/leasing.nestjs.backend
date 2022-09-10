@@ -18,9 +18,11 @@ import {
   OneToOne,
   PrimaryGeneratedColumn,
   TableInheritance,
+  Unique,
 } from 'typeorm';
 
 @Entity()
+@Unique(['email'])
 @TableInheritance({ column: { type: 'varchar', name: 'type' } })
 export class ProfileInfo extends BaseEntity {
   @PrimaryGeneratedColumn('uuid')
@@ -31,7 +33,7 @@ export class ProfileInfo extends BaseEntity {
   site: string;
 
   @Column()
-  inn: number;
+  inn: string;
 
   @Column()
   ogrn: number;

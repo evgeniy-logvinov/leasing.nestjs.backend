@@ -1,8 +1,19 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { IsString, IsNotEmpty, IsNumber, IsUUID } from 'class-validator';
+import {
+  IsString,
+  IsNotEmpty,
+  IsNumber,
+  IsUUID,
+  IsOptional,
+} from 'class-validator';
 
 // TODO: make strings size
 export class AddressDto {
+  @ApiProperty()
+  @IsOptional()
+  @IsUUID()
+  id: string;
+
   @ApiProperty()
   @IsNumber()
   @IsNotEmpty()

@@ -2,6 +2,7 @@ import {
   Body,
   Controller,
   Get,
+  Param,
   Post,
   UseGuards,
   UsePipes,
@@ -23,9 +24,9 @@ export class ProfitAndLossStatementController {
   ) {}
 
   @Get()
-  get(@Body() clientId: string): Promise<ProfitAndLossStatement> {
+  get(@Param() params): Promise<ProfitAndLossStatement> {
     return this.profitAndLossStatementService.getProfitAndLossStatement(
-      clientId,
+      params.clientId,
     );
   }
 

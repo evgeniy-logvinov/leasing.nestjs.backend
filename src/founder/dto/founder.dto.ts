@@ -7,10 +7,17 @@ import {
   MaxLength,
   IsEnum,
   IsDefined,
+  IsUUID,
+  IsOptional,
 } from 'class-validator';
 import { FounderTypeEnum } from 'src/utils/entities';
 
 export class FounderDto {
+  @ApiProperty()
+  @IsOptional()
+  @IsUUID()
+  id: string;
+
   @ApiProperty({ enum: FounderTypeEnum, enumName: 'FounderTypeEnum' })
   @IsEnum(FounderTypeEnum)
   @IsDefined()

@@ -1,44 +1,42 @@
-import {
-  InternalServerErrorException,
-  NotFoundException,
-} from '@nestjs/common';
+import { InternalServerErrorException } from '@nestjs/common';
 import { BalanceHistoryTwoMonthDto } from 'src/balance/balance-history-two-months/dto/balance-history-two-months.dto';
 import { BalanceHistoryTwoMonths } from 'src/balance/balance-history-two-months/entity/balance-history-two-months.entity';
-import { Client } from 'src/user-info/client/entity/client.entity';
+import { ClientNotFoundException } from 'src/handlers/errors/ClientNotFoundException';
 import { EntityRepository, Repository } from 'typeorm';
 import { CreateProfitAndLossStatementDto } from '../dto/create-profit-and-loss-statement.dto';
 import { ProfitAndLossStatement } from '../entity/profit-and-loss-statement.entity';
 
 @EntityRepository(ProfitAndLossStatement)
 export class ProfitAndLossStatementRepository extends Repository<ProfitAndLossStatement> {
-  async createProfitAndLossStatement(
-    {
-      clientId,
-      revenue,
-      costOfSales,
-      grossProfit,
-      commercialExpenses,
-      managementExpenses,
-      profitFromSales,
-      incomeFromParticipation,
-      interestReceivable,
-      interestPayable,
-      otherIncome,
-      otherExpenses,
-      profitBeforeTax,
-      currentIncomeTax,
-      changeInDeferredTaxLiabilities,
-      changeInDeferredTaxAssets,
-      other,
-      netProfit,
-    }: CreateProfitAndLossStatementDto,
-    profitAndLossStatement: ProfitAndLossStatement,
-  ): Promise<{ message: string; id: string }> {
-    const client = await Client.findOne({ where: { id: clientId } });
-    if (!client) {
-      throw new NotFoundException('Client not found.');
+  async createProfitAndLossStatement({
+    clientId,
+    revenue,
+    costOfSales,
+    grossProfit,
+    commercialExpenses,
+    managementExpenses,
+    profitFromSales,
+    incomeFromParticipation,
+    interestReceivable,
+    interestPayable,
+    otherIncome,
+    otherExpenses,
+    profitBeforeTax,
+    currentIncomeTax,
+    changeInDeferredTaxLiabilities,
+    changeInDeferredTaxAssets,
+    other,
+    netProfit,
+  }: CreateProfitAndLossStatementDto): Promise<{
+    message: string;
+    id: string;
+  }> {
+    if (!clientId) {
+      throw new ClientNotFoundException();
     }
-
+    const profitAndLossStatement = await this.findOne({
+      where: { client: { id: clientId } },
+    });
     try {
       (profitAndLossStatement.revenue = await this.createTwoMonthHistory(
         revenue,
@@ -95,13 +93,9 @@ export class ProfitAndLossStatementRepository extends Repository<ProfitAndLossSt
     currentYear,
     previousYear,
   }: BalanceHistoryTwoMonthDto): Promise<BalanceHistoryTwoMonths> {
-    let newTwoMonthHistory = await BalanceHistoryTwoMonths.findOne({
+    const newTwoMonthHistory = await BalanceHistoryTwoMonths.findOne({
       where: { id },
     });
-
-    if (!newTwoMonthHistory) {
-      newTwoMonthHistory = BalanceHistoryTwoMonths.create();
-    }
 
     newTwoMonthHistory.currentYear = currentYear;
     newTwoMonthHistory.previousYear = previousYear;

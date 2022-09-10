@@ -31,7 +31,7 @@ export class ApplicationService {
 
   async getAllApplicationsByClientId(clientId: string): Promise<Application[]> {
     if (!clientId) {
-      throw new NotFoundException('Client not found.');
+      throw new NotFoundException('Client id is empty');
     }
 
     return await this.applicationRepository.find({

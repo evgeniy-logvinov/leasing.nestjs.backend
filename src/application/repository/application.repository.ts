@@ -1,7 +1,4 @@
-import {
-  InternalServerErrorException,
-  NotFoundException,
-} from '@nestjs/common';
+import { InternalServerErrorException } from '@nestjs/common';
 import { Client } from 'src/user-info/client/entity/client.entity';
 import { EntityRepository, Repository } from 'typeorm';
 import { CreateApplicationDto } from '../dto/create-application.dto';
@@ -26,10 +23,6 @@ export class ApplicationRepository extends Repository<Application> {
       const client = await Client.findOneOrFail({
         where: { id: clientId },
       });
-
-      // if (!client) {
-      //   throw new NotFoundException('Client not found.');
-      // }
 
       const application = await Application.findOne({
         where: { id },

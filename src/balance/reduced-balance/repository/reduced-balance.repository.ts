@@ -1,10 +1,7 @@
-import {
-  InternalServerErrorException,
-  NotFoundException,
-} from '@nestjs/common';
+import { InternalServerErrorException } from '@nestjs/common';
 import { BalanceHistoryThreeMonthDto } from 'src/balance/balance-history-three-months/dto/balance-history-three-months.dto';
 import { BalanceHistoryThreeMonths } from 'src/balance/balance-history-three-months/entity/balance-history-three-months.entity';
-import { Client } from 'src/user-info/client/entity/client.entity';
+import { ClientNotFoundException } from 'src/handlers/errors/ClientNotFoundException';
 import { EntityRepository, Repository } from 'typeorm';
 import { CreateReducedBalanceDto } from '../dto/create-reduced-balance.dto';
 import { ReducedBalance } from '../entity/reduced-balance.entity';
@@ -15,16 +12,16 @@ import { ReducedBalancePassive } from '../reduced-balance-passive/entity/reduced
 
 @EntityRepository(ReducedBalance)
 export class ReducedBalanceRepository extends Repository<ReducedBalance> {
-  async createReducedBalance(
-    reducedBalanceDto: CreateReducedBalanceDto,
-    reducedBalance: ReducedBalance,
-  ): Promise<{ message: string; id: string }> {
-    const { active, clientId, passive } = reducedBalanceDto;
-    const client = await Client.findOne({ where: { id: clientId } });
-    if (!client) {
-      throw new NotFoundException('Client not found.');
+  async createReducedBalance({
+    active,
+    clientId,
+    id,
+    passive,
+  }: CreateReducedBalanceDto): Promise<{ message: string; id: string }> {
+    if (!clientId) {
+      throw new ClientNotFoundException();
     }
-
+    const reducedBalance = await this.findOne({ where: { client: { id } } });
     try {
       reducedBalance.active = await this.createActive(active);
       reducedBalance.passive = await this.createPassive(passive);
@@ -46,13 +43,9 @@ export class ReducedBalanceRepository extends Repository<ReducedBalance> {
     stocks,
     tangibleNonCurrentAssets,
   }: ReducedBalanceActiveDto): Promise<ReducedBalanceActive> {
-    let newActive = await ReducedBalanceActive.findOne({
+    const newActive = await ReducedBalanceActive.findOne({
       where: { id },
     });
-
-    if (!newActive) {
-      newActive = ReducedBalanceActive.create();
-    }
 
     newActive.cashAndCashEquivalents = await this.createThreeMonthHistory(
       cashAndCashEquivalents,
@@ -83,13 +76,9 @@ export class ReducedBalanceRepository extends Repository<ReducedBalance> {
     otherAccountsPayable,
     otherLongTermLiabilities,
   }: ReducedBalancePassiveDto): Promise<ReducedBalancePassive> {
-    let newPassive = await ReducedBalancePassive.findOne({
+    const newPassive = await ReducedBalancePassive.findOne({
       where: { id },
     });
-
-    if (!newPassive) {
-      newPassive = ReducedBalancePassive.create();
-    }
 
     newPassive.capitalAndReserves = await this.createThreeMonthHistory(
       capitalAndReserves,
@@ -124,13 +113,9 @@ export class ReducedBalanceRepository extends Repository<ReducedBalance> {
     previousYear,
     previuosPreviousYear,
   }: BalanceHistoryThreeMonthDto): Promise<BalanceHistoryThreeMonths> {
-    let newThreeMonthHistory = await BalanceHistoryThreeMonths.findOne({
+    const newThreeMonthHistory = await BalanceHistoryThreeMonths.findOne({
       where: { id },
     });
-
-    if (!newThreeMonthHistory) {
-      newThreeMonthHistory = BalanceHistoryThreeMonths.create();
-    }
 
     newThreeMonthHistory.currentYear = currentYear;
     newThreeMonthHistory.previousYear = previousYear;

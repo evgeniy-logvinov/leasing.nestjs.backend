@@ -10,32 +10,13 @@ export class ReducedBalanceService {
   constructor(
     @InjectRepository(ReducedBalanceRepository)
     private reducedBalanceRepository: ReducedBalanceRepository,
-    @InjectRepository(ClientRepository)
-    private clientRepository: ClientRepository,
   ) {}
 
   async setReducedBalance(
     reducedBalanceDto: CreateReducedBalanceDto,
   ): Promise<{ message: string; id: string }> {
-    const client = await this.clientRepository.findOne({
-      where: { id: reducedBalanceDto.clientId },
-    });
-
-    if (!client) {
-      throw new NotFoundException('Client not found.');
-    }
-
-    let reducedBalance = await this.reducedBalanceRepository.findOne({
-      where: { clientId: client.id },
-    });
-
-    if (!reducedBalance) {
-      reducedBalance = ReducedBalance.create();
-      reducedBalance.client = client;
-    }
     const { id } = await this.reducedBalanceRepository.createReducedBalance(
       reducedBalanceDto,
-      reducedBalance,
     );
 
     return { message: 'Reduced balance created', id };

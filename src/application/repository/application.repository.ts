@@ -17,9 +17,9 @@ export class ApplicationRepository extends Repository<Application> {
     releaseDate,
     subjectOfLeasing,
     typeOfSupplier,
-  }: CreateApplicationDto): Promise<{ message: string; id: string }> {
+  }: CreateApplicationDto): Promise<Application> {
     try {
-      const application = await this.save({
+      return await this.save({
         id,
         isNew,
         client: { id: clientId },
@@ -32,11 +32,6 @@ export class ApplicationRepository extends Repository<Application> {
         ndsPayer,
         model,
       });
-
-      return {
-        message: 'Application successfully created or updated!',
-        id: application.id,
-      };
     } catch (error) {
       // TODO: Handler global where we catch 500 error
       throw new InternalServerErrorException();

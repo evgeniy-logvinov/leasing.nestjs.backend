@@ -1,5 +1,6 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
+import { ClientNotFoundException } from 'src/handlers/errors/ClientNotFoundException';
 import { CreateApplicationDto } from '../dto/create-application.dto';
 import { Application } from '../entity/application.entity';
 import { ApplicationRepository } from '../repository/application.repository';
@@ -18,7 +19,10 @@ export class ApplicationService {
       applicationDto,
     );
 
-    return { message: 'Application created', id };
+    return {
+      message: 'Application successfully created or updated!',
+      id,
+    };
   }
   // TODO: check fail case
   async getApplicationById(id: string): Promise<Application> {
@@ -31,7 +35,7 @@ export class ApplicationService {
 
   async getAllApplicationsByClientId(clientId: string): Promise<Application[]> {
     if (!clientId) {
-      throw new NotFoundException('Client id is empty');
+      throw new ClientNotFoundException();
     }
 
     return await this.applicationRepository.find({

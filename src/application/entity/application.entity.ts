@@ -27,7 +27,7 @@ export class Application extends LeasingBaseEntity {
   @Column()
   country: string;
 
-  @Column()
+  @Column({ type: 'timestamptz' })
   releaseDate: Date;
 
   @Column({

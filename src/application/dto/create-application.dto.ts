@@ -1,15 +1,12 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { Transform, Type } from 'class-transformer';
 import {
   IsNotEmpty,
   IsUUID,
   IsBoolean,
-  IsEmpty,
   IsOptional,
   IsDefined,
   IsEnum,
   IsString,
-  IsDate,
   IsDateString,
 } from 'class-validator';
 import { TypeOfLeasingSubjectEnum } from 'src/utils/entities/TypeOfLeasingSubjectEnum';
@@ -56,6 +53,7 @@ export class CreateApplicationDto {
   country: string;
 
   @ApiProperty()
+  // TODO: have a look how it works on FE
   // @Transform((value) => new Date(value))
   // For optional values
   // @Transform((value) => value && new Date(value))

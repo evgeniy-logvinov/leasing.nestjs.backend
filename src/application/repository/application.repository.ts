@@ -1,5 +1,4 @@
 import { InternalServerErrorException } from '@nestjs/common';
-import { Client } from 'src/user-info/client/entity/client.entity';
 import { EntityRepository, Repository } from 'typeorm';
 import { CreateApplicationDto } from '../dto/create-application.dto';
 import { Application } from '../entity/application.entity';
@@ -20,30 +19,26 @@ export class ApplicationRepository extends Repository<Application> {
     typeOfSupplier,
   }: CreateApplicationDto): Promise<{ message: string; id: string }> {
     try {
-      const client = await Client.findOneOrFail({
-        where: { id: clientId },
+      const application = await this.save({
+        id,
+        isNew,
+        client: { id: clientId },
+        isReturnable,
+        country,
+        brand,
+        typeOfSupplier,
+        subjectOfLeasing,
+        releaseDate,
+        ndsPayer,
+        model,
       });
-
-      const application = await Application.findOne({
-        where: { id },
-      });
-      application.isNew = isNew;
-      application.client = client;
-      application.isReturnable = isReturnable;
-      application.country = country;
-      application.brand = brand;
-      application.typeOfSupplier = typeOfSupplier;
-      application.subjectOfLeasing = subjectOfLeasing;
-      application.releaseDate = releaseDate;
-      application.ndsPayer = ndsPayer;
-      application.model = model;
-      await application.save();
 
       return {
-        message: 'Application successfully created!',
+        message: 'Application successfully created or updated!',
         id: application.id,
       };
     } catch (error) {
+      // TODO: Handler global where we catch 500 error
       throw new InternalServerErrorException();
     }
   }

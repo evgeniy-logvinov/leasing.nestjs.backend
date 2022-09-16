@@ -24,6 +24,8 @@
     "typeorm:generate": "npm run typeorm migration:generate -- -n",
     "typeorm:run": "npm run typeorm migration:run",
     "typeorm:revert": "npm run typeorm migration:revert",
+    "migration:init": "docker-compose run nestjs npm run typeorm:generate init",
+    "migration:run": "docker-compose run nestjs npm run typeorm:run",
     "cleanup": "rm -rf ./dist && rm -rf ./pgadmin-data && rm -rf ./pgdata && rm -rf ./src/migration/",
     "db:script": "docker exec -u postgres postgres-db psql tododb postgres -f",
     "db:init": "docker exec -u postgres postgres-db psql tododb postgres -f init.sql/init-roles-permissions.sql && docker exec -u postgres postgres-db psql tododb postgres -f init.sql/init-users.sql && docker exec -u postgres postgres-db psql tododb postgres -f init.sql/init-applications.sql"
